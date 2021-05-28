@@ -7,9 +7,9 @@
     "dialect": "postgres"
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
+    "username": "postgres",
+    "password": "postgres",
+    "database": "tinder-cats-test",
     "host": "localhost",
     "dialect": "postgres"
   },

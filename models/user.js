@@ -20,8 +20,10 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     username: {
       type: DataTypes.STRING,
+      unique: { args: true, msg: "username already exists" },
       validate : {
         notEmpty : {
+          args: true,
           msg : "Username should not be empty"
         }
       }
@@ -30,17 +32,20 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.STRING,
     validate : {
       notEmpty : {
+        args: true,
         msg : "Location should not be empty"
       }
     }
   },
     email: {
       type : DataTypes.STRING,
+      unique: { args: true, msg: "email already exists" },
       validate : {
         isEmail : {
           msg : "Email is incorrect"
         },
         notEmpty : {
+          args: true,
           msg : "Email should not be empty"
         }
       }
@@ -49,6 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate : {
         notEmpty : {
+          args: true,
           msg : "Password should not be empty"
         }
       }
