@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   ChatRoom.init({
-    IsMatchedId: DataTypes.INTEGER
+    IsMatchedId: DataTypes.INTEGER,
+    uid: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'ChatRoom',

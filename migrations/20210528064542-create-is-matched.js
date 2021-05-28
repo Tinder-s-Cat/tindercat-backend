@@ -27,7 +27,8 @@ module.exports = {
         onUpdate: "CASCADE"
       },
       status: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: "pending"
       },
       createdAt: {
         allowNull: false,
