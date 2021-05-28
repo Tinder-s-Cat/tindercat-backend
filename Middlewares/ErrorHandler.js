@@ -11,6 +11,8 @@ module.exports = (err, req, res, next) => {
         res.status(400).json({ message : "Email / Username already exist"})
     } else if (err.name === 'Unauthorized') {
         res.status(401).json({ message : "Invalid email / password"})
+    } else if (err.name === "Cat not found") {
+        res.status(404).json({ message: "error not found" });
     } else if (err.name === "not logged in"){
         res.status(401).json({ message: "please login first" });
     } else if (err.name === "Invalid JWT") {

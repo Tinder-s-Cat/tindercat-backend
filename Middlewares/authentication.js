@@ -1,4 +1,4 @@
-const {verifyToken } = require("../helper/jwt");
+const {verifyToken } = require("../helpers/jwt");
 const { User } = require("../models");
 
 async function authentication(req, res, next) {
@@ -15,10 +15,10 @@ async function authentication(req, res, next) {
         req.loggedUser = {
           id: data.id,
           email: data.email,
-          username: data.username,
-          password: data.password,
-          location: data.location,
-          profilePicture: data.profilePicture
+          // username: data.username,
+          // password: data.password,
+          // location: data.location,
+          // profilePicture: data.profilePicture
         };
         next();
       }
