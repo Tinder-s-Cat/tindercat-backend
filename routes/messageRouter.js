@@ -6,8 +6,8 @@ const authChatroom = require("../Middlewares/authorizationChatroom");
 
 
 messgaeRouter.use(authentication);
-messgaeRouter.get("/matched", messageController.getMatched)
-messgaeRouter.get("/chatroom", messageController.getChatroom)
+// messgaeRouter.get("/matched", messageController.getMatched)
+messgaeRouter.get("/friend", messageController.getChatroom)
 
 messgaeRouter.get("/chatroom/:id/:isMatchId", authChatroom, messageController.getMessage)
 messgaeRouter.post("/chatroom/:id/:isMatchId", authChatroom, messageController.postMessage)

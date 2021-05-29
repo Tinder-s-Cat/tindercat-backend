@@ -43,7 +43,6 @@ class MessageController {
 
     //show chatroom based on matched user
     static getChatroom(req, res, next) {
-        console.log("authentication>>>>>>", req.loggedUser)
         ChatRoom.findAll({
             include: [{
                 model: IsMatch,
@@ -85,7 +84,7 @@ class MessageController {
         });
     }
 
-    //getting message based on ChatRoom
+    //GET CHATROOM (SHOWS ALL MESSAGE BETWEEN 2 USERS) BASED ON ChatroomId AND isMatchId
     static getMessage(req, res, next) {
         let id = req.params.id
         let isMatchId = req.params.isMatchId
@@ -95,18 +94,6 @@ class MessageController {
                 {
                     model : User,
                     attributes : ['id', 'username', 'location', 'email', 'profilePicture']
-                },
-                {
-                    model : ChatRoom,
-                    attributes : ['id'],
-                    include : [
-                        {
-                            model : IsMatch
-                        }
-                    ],
-                    where : {
-                        IsMatchId : isMatchId
-                    }
                 }
             ], where : {
                 ChatRoomId : id
