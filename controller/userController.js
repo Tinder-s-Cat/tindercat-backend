@@ -27,32 +27,31 @@ class userController {
     }
 
     static login(req, res, next) {
-        let { email, password } = req.body;
-        User.findOne({
-          where: {
-            email,
-          },
-        })
-          .then((data) => {
+      let { email, password } = req.body;
+      User.findOne({
+        where: {
+          email,
+        },
+      })
+      .then((data) => {
+        if (data === null) {
+          throw { name: "Unauthorized" };
+        } else {
+          let decode = comparePassword(password, data.password);
+          if (decode) {
+            let payload = {
+              id: data.id,
+              email: data.email,
+            };
+            res.status(200).json({ access_token: generateToken(payload) });
+          } 
+          else {
             
-            if (data === null) {
-              throw { name: "Unauthorized" };
-            } else {
-              let decode = comparePassword(password, data.password);
-              if (decode) {
-                let payload = {
-                  id: data.id,
-                  email: data.email,
-                };
-                res.status(200).json({ access_token: generateToken(payload) });
-              } 
-              else {
-                  
-                throw { name: "Unauthorized" };
-              }
-            }
-          })
-          .catch((err) => {
+            throw { name: "Unauthorized" };
+          }
+        }
+      })
+      .catch((err) => {
             next(err);
           });
       	}
@@ -95,6 +94,7 @@ class userController {
 
 	static postLikesToOneCat(req, res, next) {
 		const { UserId, CatId } = req.body
+    let message = "Cat Liked"
 		IsLike.findOne({
 			where:{
 				UserId,
@@ -112,8 +112,37 @@ class userController {
 				}
 			})
 			.then(() => {
-				res.status(200).json({message: "Cat Liked"})
+        return IsMatch.findOne({
+          where: {
+            UserId,
+            OwnerId: +req.loggedUser.id
+          }
+        })
+				// res.status(200).json({message: "Cat Liked"})
 			})
+      .then((isMatches) => {
+        if(isMatches===null){
+          return IsMatch.create({
+            UserId : +req.loggedUser.id,
+            OwnerId: UserId,
+            status: "pending"
+          }, next)
+        } else {
+          message = "Congratulation You Are Match"
+          return IsMatch.update({
+            status: "match"
+          },
+          {
+            where: {
+              UserId,
+              OwnerId: +req.loggedUser.id,
+            }
+          })
+        }
+      })
+      .then(() => {
+        res.status(200).json({message})
+      })
 			.catch((err)=>{
 				next(err)
 			})
