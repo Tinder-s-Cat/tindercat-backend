@@ -86,6 +86,23 @@ class MessageController {
             next(err);
         });
     }
+
+    static postMessage(req, res, next) {
+        let id = req.params.id
+        let data = {
+            UserId : 1,
+            ChatRoomId : id,
+            message : req.body.message
+        }
+        Message.create(data)
+        .then(data => {
+            res.status(201).json(data)
+        })
+        .catch((err) => {
+            console.log(err, "error ni")
+            next(err);
+        });
+    }
 }
 
 module.exports = MessageController
