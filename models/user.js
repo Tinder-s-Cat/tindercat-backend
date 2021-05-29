@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Cat)
       User.hasMany(models.IsLike)
       User.hasMany(models.Message)
+      User.hasMany(models.IsMatch)
     }
   };
   User.init({

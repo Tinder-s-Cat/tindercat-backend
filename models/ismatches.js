@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // IsMatch.belongsTo(models.User)
+      IsMatch.belongsTo(models.User)
     }
   };
   IsMatch.init({
