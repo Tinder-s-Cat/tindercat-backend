@@ -12,10 +12,19 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       ChatRoom.hasMany(models.Message)
+      ChatRoom.belongsTo(models.IsMatch)
     }
   };
   ChatRoom.init({
-    IsMatchedId: DataTypes.INTEGER,
+    IsMatchId: {
+      type : DataTypes.INTEGER,
+      references: {
+        model: "IsMatches",
+        key: "id",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE"
+    },
     uid: DataTypes.STRING
   }, {
     sequelize,

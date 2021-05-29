@@ -11,7 +11,7 @@ module.exports = {
       uid: {
         type: Sequelize.STRING
       },
-      IsMatchedId: {
+      IsMatchId: {
         type: Sequelize.INTEGER,
         references: {
           model: "IsMatches",
