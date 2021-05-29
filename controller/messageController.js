@@ -44,9 +44,22 @@ class MessageController {
     //show chatroom based on matched user
     static Chatroom(req, res, next) {
         ChatRoom.findAll({
-            include: {
-                model : IsMatch
-            }
+            include: [{
+                model: IsMatch,
+                include: [
+                    {
+                    model : User,
+                    as : 'User',
+                    attributes : ['id', 'username', 'location', 'email', 'profilePicture']
+                    },
+                    {
+                        model : User,
+                        as : 'Owner',
+                        attributes : ['id', 'username', 'location', 'email', 'profilePicture']
+                    }
+                ]
+            }]
+        
         })
         .then(data => {
             res.status(200).json(data)
