@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate : {
         notEmpty : {
+          args: true,
           msg : "Name should not be empty"
         }
       }
@@ -29,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate : {
         notEmpty : {
+          args: true,
           msg : "Gender should not be empty"
         }
       }
@@ -37,14 +39,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       validate : {
         notEmpty : {
+          args: true,
           msg : "Age should not be empty"
-        }
+        },
+        isNumeric: {args: true, msg: "Age must be number"},
+        min: { args: 1, msg: "the minimum age is 1" },
       }
     },
     race: {
       type: DataTypes.STRING,
       validate : {
         notEmpty : {
+          args: true,
           msg : "Race should not be empty"
         }
       }
@@ -57,6 +63,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       validate : {
         notEmpty : {
+          args: true,
           msg : "Profile picture should not be empty"
         }
       }
@@ -65,6 +72,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate : {
         notEmpty : {
+          args: true,
           msg : "Description should not be empty"
         }
       }

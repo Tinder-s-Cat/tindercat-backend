@@ -11,7 +11,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // IsMatch.belongsTo(models.User)
+      IsMatch.hasOne(models.ChatRoom)
+      IsMatch.belongsTo(models.User, {
+        foreignKey : {
+          name : 'UserId',
+          allowNull : false
+        },
+        targetKey : "id",
+        as : "User"
+      })
+      IsMatch.belongsTo(models.User, {
+        foreignKey : {
+          name : 'OwnerId',
+          allowNull : false
+        },
+        targetKey : "id",
+        as : "Owner"
+      })
     }
   };
   IsMatch.init({

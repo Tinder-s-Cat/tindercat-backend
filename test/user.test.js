@@ -153,7 +153,7 @@ describe("POST /register register failed because of empty fields", function () {
               done();
             })
             .catch((err) => {
-                console.log(err.message, "ini ERR NAME")
+                
               done(err);
             });
         });
@@ -178,7 +178,7 @@ describe("POST /register register failed because of empty fields", function () {
               done();
             })
             .catch((err) => {
-                console.log(err.message, "ini ERR NAME")
+                
               done(err);
             });
         });

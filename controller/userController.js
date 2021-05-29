@@ -34,7 +34,7 @@ class userController {
           },
         })
           .then((data) => {
-              console.log(data)
+            
             if (data === null) {
               throw { name: "Unauthorized" };
             } else {
@@ -45,8 +45,9 @@ class userController {
                   email: data.email,
                 };
                 res.status(200).json({ access_token: generateToken(payload) });
-              } else {
-                  console.log('masuk')
+              } 
+              else {
+                  
                 throw { name: "Unauthorized" };
               }
             }
