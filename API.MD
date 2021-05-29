@@ -1,15 +1,22 @@
 # TINDER FOR CATS
 ## Available endpoints
 
+> REGISTER & LOGIN
 - `POST /register`
 - `POST /login`
 
+> CATS
 - `GET CATS /cat`
 - `GET CATS BY ID /cat/:id`
 - `POST CATS /cat`
 - `PUT CATS /cat/:id`
 - `PATCH CATS /cat/:id`
 - `DELETE CATS /cat/:id`
+
+> MESSAGE
+- `GET FRIENDS /friend`
+- `GET CHATROOM /chatroom/:id/:isMatchId`
+- `POST MESSAGE /chatroom/:id/:isMatchId`
 
 
 ## RESTful endpoints
@@ -358,5 +365,197 @@ _Response (200 - OK)_
 ```
 {
   message: "Cat successfully deleted"
+}
+```
+
+### DELETE CATS /cat/:id
+
+> delete cat based on ID
+
+_Request Header_
+
+```
+    access_token(string)
+```
+
+_Request Body_
+
+```
+{
+
+    not needed
+
+}
+```
+
+_Request Params_
+
+```
+    id=[integer]
+```
+
+_Response (200 - OK)_
+
+```
+{
+  message: "Cat successfully deleted"
+}
+```
+
+### GET FRIENDS /friend
+
+> GET ALL MATCHED USER
+
+_Request Header_
+
+```
+    access_token(string)
+```
+
+_Request Body_
+
+```
+{
+
+    not needed
+
+}
+```
+
+_Response (200 - OK)_
+
+```
+[
+  {
+      "id" : 2 [represents ChatroomId]
+      "IsMatchId" : 2,
+      "uid" : "1f9da488-6794-454f-a638-b4a2b109a502",
+      "createdAt": "2021-05-29T06:35:36.967Z",
+      "updatedAt": "2021-05-29T15:52:10.497Z",
+      "IsMatch" : {
+          "id" : 2,
+          "UserId" : 3,
+          "OwnerId" : 2,
+          "status" : "Match",
+          "createdAt": "2021-04-05T03:24:24.764Z",
+            "updatedAt": "2021-04-05T03:24:24.764Z",
+            "User": {
+                "id": 3,
+                "username": "khaer",
+                "location": "Jakarta",
+                "email": "k@mail.com",
+                "profilePicture": "https://lh3.googleusercontent.com/ogw/ADGmqu9v_mymcX9xsd3tpF4AtS8Na3XMCi6dv-hg3BFFVw=s192-c-mo"
+            },
+            "Owner": {
+                "id": 2,
+                "username": "fadel",
+                "location": "Jakarta",
+                "email": "fadel@mail.com",
+                "profilePicture": "https://lh3.googleusercontent.com/ogw/ADGmqu9v_mymcX9xsd3tpF4AtS8Na3XMCi6dv-hg3BFFVw=s192-c-mo"
+            }
+      }
+  }
+]
+```
+
+### GET CHATROOM /chatroom/:id/:isMatchId
+
+> SHOWS ALL MESSAGE BETWEEN 2 USERS BASED ON ChatroomId AND isMatchId
+
+_Request Header_
+
+```
+    access_token(string)
+```
+
+_Request Params_
+
+```
+    id=[integer (ChatroomId)]
+    isMatchId=[integer (IsMatchId)]
+```
+
+_Request Body_
+
+```
+{
+
+    not needed
+
+}
+```
+
+_Response (200 - OK)_
+
+```
+[
+  {
+        "id": 5,
+        "ChatRoomId": 2,
+        "UserId": 3,
+        "message": "aku khaer",
+        "createdAt": "2021-05-29T08:54:59.949Z",
+        "updatedAt": "2021-05-29T08:54:59.949Z",
+        "User": {
+            "id": 3,
+            "username": "khaer",
+            "location": "Jakarta",
+            "email": "k@mail.com",
+            "profilePicture": "https://lh3.googleusercontent.com/ogw/ADGmqu9v_mymcX9xsd3tpF4AtS8Na3XMCi6dv-hg3BFFVw=s192-c-mo"
+        }
+    },
+    {
+        "id": 8,
+        "ChatRoomId": 2,
+        "UserId": 1,
+        "message": "kucing aku namanya lope / female",
+        "createdAt": "2021-05-29T15:56:08.651Z",
+        "updatedAt": "2021-05-29T15:56:08.651Z",
+        "User": {
+            "id": 1,
+            "username": "emiliakhaer",
+            "location": "Jakarta",
+            "email": "emil@mail.com",
+            "profilePicture": "https://lh3.googleusercontent.com/ogw/ADGmqu9v_mymcX9xsd3tpF4AtS8Na3XMCi6dv-hg3BFFVw=s192-c-mo"
+        }
+    }
+]
+```
+
+### POST MESSAGE /chatroom/:id/:isMatchId
+
+> POST A MESSAGE TO CHATROOM; BASED ON ChatroomId AND isMatchId
+
+_Request Header_
+
+```
+    access_token(string)
+```
+
+_Request Params_
+
+```
+    id=[integer (ChatroomId)]
+    isMatchId=[integer (IsMatchId)]
+```
+
+_Request Body_
+
+```
+{
+    "message" : "kucing aku namanya lope / female"
+}
+```
+
+_Response (200 - OK)_
+
+```
+{
+    "id": 8,
+    "UserId": 1,
+    "ChatRoomId": 2,
+    "message": "kucing aku namanya lope / female",
+    "updatedAt": "2021-05-29T15:56:08.651Z",
+    "createdAt": "2021-05-29T15:56:08.651Z"
 }
 ```
