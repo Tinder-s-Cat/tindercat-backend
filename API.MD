@@ -368,40 +368,6 @@ _Response (200 - OK)_
 }
 ```
 
-### DELETE CATS /cat/:id
-
-> delete cat based on ID
-
-_Request Header_
-
-```
-    access_token(string)
-```
-
-_Request Body_
-
-```
-{
-
-    not needed
-
-}
-```
-
-_Request Params_
-
-```
-    id=[integer]
-```
-
-_Response (200 - OK)_
-
-```
-{
-  message: "Cat successfully deleted"
-}
-```
-
 ### GET FRIENDS /friend
 
 > GET ALL MATCHED USER
