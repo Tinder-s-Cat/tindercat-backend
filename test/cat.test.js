@@ -591,6 +591,24 @@ describe("DELETE/cat deleteCats SUCCESS ", function () {
   });
 });
 
+// describe("DELETE/cat deleteCats FAILED because of unauthorized", function () {
+//   it("responds with status 401", function (done) {
+//     request(app)
+//       .delete(`/cat/${cat_id}`)
+//       .set("access_token", user2_token)
+//       .then((response) => {
+//         let { body, status } = response;
+//         console.log(body)
+//         expect(status).toEqual(401);
+//         expect(body.message).toEqual("Not authorized!");
+//         done();
+//       })
+//       .catch((err) => {
+//         done(err);
+//       });
+//   });
+// });
+
 describe("DELETE/cat deleteCats FAILED because of not having an access token ", function () {
   it("responds with status 401", function (done) {
     request(app)
