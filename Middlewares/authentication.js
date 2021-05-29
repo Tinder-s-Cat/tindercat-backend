@@ -9,9 +9,7 @@ async function authentication(req, res, next) {
       let data = await User.findOne({
         where: { email: decode.email },
       });
-      if (!data) {
-        throw { name: "Invalid email / password" };
-      } else {
+      if (data) {
         req.loggedUser = {
           id: data.id,
           email: data.email,
@@ -20,8 +18,12 @@ async function authentication(req, res, next) {
           // location: data.location,
           // profilePicture: data.profilePicture
         };
+        // console.log('MASUK')
         next();
-      }
+      } 
+      // else {
+      //   throw { name: "Unauthorized" };
+      // }
     } else {
       throw { name: "not logged in" };
     }

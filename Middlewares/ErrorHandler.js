@@ -15,7 +15,9 @@ module.exports = (err, req, res, next) => {
         res.status(404).json({ message: "error not found" });
     } else if (err.name === "not logged in"){
         res.status(401).json({ message: "please login first" });
-    } else if (err.name === "Invalid JWT") {
+    } else if (err.name === "Not authorized!"){
+        res.status(401).json({ message: "Not authorized!" });
+    }else if (err.name === "Invalid JWT") {
         res.status(401).json({ message : 'Invalid JWT token'})
     } else if (err.name === 'SequelizeDatabaseError') {
         res.status(400).json({ message : "Invalid Input" })

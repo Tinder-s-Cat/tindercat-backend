@@ -43,7 +43,8 @@ class userController {
                   email: data.email,
                 };
                 res.status(200).json({ access_token: generateToken(payload) });
-              } else {
+              } 
+              else {
                   
                 throw { name: "Unauthorized" };
               }
