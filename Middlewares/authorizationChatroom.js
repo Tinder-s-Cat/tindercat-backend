@@ -1,7 +1,7 @@
 const {IsMatch} = require("../models");
 const { Op } = require("sequelize");
 
-async function authMessage(req, res, next) {
+async function authChatroom(req, res, next) {
   try {
     let id = +req.params.isMatchId;
     const findIsMatch = await IsMatch.findOne({
@@ -25,4 +25,4 @@ async function authMessage(req, res, next) {
   }
 }
 
-module.exports = authMessage
+module.exports = authChatroom
