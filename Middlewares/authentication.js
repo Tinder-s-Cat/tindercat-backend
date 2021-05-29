@@ -1,4 +1,4 @@
-const {verifyToken } = require("../helper/jwt");
+const {verifyToken } = require("../helpers/jwt");
 const { User } = require("../models");
 
 async function authentication(req, res, next) {
@@ -9,19 +9,21 @@ async function authentication(req, res, next) {
       let data = await User.findOne({
         where: { email: decode.email },
       });
-      if (!data) {
-        throw { name: "Invalid email / password" };
-      } else {
+      if (data) {
         req.loggedUser = {
           id: data.id,
           email: data.email,
-          username: data.username,
-          password: data.password,
-          location: data.location,
-          profilePicture: data.profilePicture
+          // username: data.username,
+          // password: data.password,
+          // location: data.location,
+          // profilePicture: data.profilePicture
         };
+        // console.log('MASUK')
         next();
-      }
+      } 
+      // else {
+      //   throw { name: "Unauthorized" };
+      // }
     } else {
       throw { name: "not logged in" };
     }
