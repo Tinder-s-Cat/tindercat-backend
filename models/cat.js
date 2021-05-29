@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Cat.belongsTo(models.User),
-      Cat.hasMany(models.IsLike)
+      Cat.hasOne(models.IsLike)
     }
   };
   Cat.init({
