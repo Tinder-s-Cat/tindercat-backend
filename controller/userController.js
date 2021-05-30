@@ -166,7 +166,7 @@ class userController {
               IsMatchId: idMatchToRoom
              })
         } else {
-          res.status(200).json({message: "You Are Ready Match Before"})
+          res.status(200).json({message: "You Are Aleady Match Before"})
         }
       })
       .then(() => {
