@@ -84,7 +84,13 @@ _Response (200 - OK)_
 
 ```
 {
-    "access_token" : "<access_token>"
+    {
+    "access_token": <access_token>,
+    "id": 5,
+    "username": "test3",
+    "location": "jakarta barat",
+    "profilePicture": "https://c.files.bbci.co.uk/12A9B/production/_111434467_gettyimages-1143489763.jpg"
+}
 }
 ```
 

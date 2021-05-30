@@ -27,31 +27,32 @@ class userController {
     }
 
     static login(req, res, next) {
-      let { email, password } = req.body;
-      User.findOne({
-        where: {
-          email,
-        },
-      })
-      .then((data) => {
-        if (data === null) {
-          throw { name: "Unauthorized" };
-        } else {
-          let decode = comparePassword(password, data.password);
-          if (decode) {
-            let payload = {
-              id: data.id,
-              email: data.email,
-            };
-            res.status(200).json({ access_token: generateToken(payload) });
-          } 
-          else {
-            
-            throw { name: "Unauthorized" };
-          }
-        }
-      })
-      .catch((err) => {
+        let { email, password } = req.body;
+        User.findOne({
+          where: {
+            email,
+          },
+        })
+          .then((data) => {
+            console.log(data)
+            if (data === null) {
+              throw { name: "Unauthorized" };
+            } else {
+              let decode = comparePassword(password, data.password);
+              if (decode) {
+                let payload = {
+                  id: data.id,
+                  email: data.email,
+                };
+                res.status(200).json({ access_token: generateToken(payload), id: data.id, username: data.username, location: data.location, profilePicture: data.profilePicture});
+              } 
+              else {
+                  
+                throw { name: "Unauthorized" };
+              }
+            }
+          })
+          .catch((err) => {
             next(err);
           });
       	}
