@@ -1,18 +1,23 @@
-const {IsMatch} = require("../models");
-const { Op } = require("sequelize");
+const {IsMatch, ChatRoom} = require("../models");
 
 async function authChatroom(req, res, next) {
   try {
-    let id = +req.params.isMatchId;
+    let isMatchId = +req.params.isMatchId;
+    let chatroomId = +req.params.id;
     const findIsMatch = await IsMatch.findOne({
       where :  {
         status : "Match",
-        id : id
+        id : isMatchId
+      }
+    })
+    const findChatRoom = await ChatRoom.findOne({
+      where :  {
+        id : chatroomId,
       }
     })
     if (findIsMatch) {
       let data = findIsMatch.dataValues;
-        if (data.UserId === req.loggedUser.id || data.OwnerId === req.loggedUser.id) {
+        if ((data.UserId === req.loggedUser.id || data.OwnerId === req.loggedUser.id) && findChatRoom.dataValues.IsMatchId === isMatchId) {
           next()
         } else {
           throw { name: "Not authorized!" };

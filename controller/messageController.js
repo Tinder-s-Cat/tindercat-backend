@@ -3,44 +3,6 @@ const { v4: uuidv4 } = require('uuid');
 const { Op } = require("sequelize");
 class MessageController {
     
-    //to show the matched users - gakdipake
-    static getMatched(req, res, next) {
-        IsMatch.findAll({
-            include : [{
-                model : User,
-                as : 'User',
-                attributes : ['id', 'username', 'location', 'email', 'profilePicture']
-            },
-            {
-                model : User,
-                as : 'Owner',
-                attributes : ['id', 'username', 'location', 'email', 'profilePicture']
-            }
-        ], where : {
-            status : "Match",
-            [Op.or] : [
-                {
-                    UserId : {
-                        [Op.eq] : req.loggedUser.id
-                    }
-                },
-                {
-                    OwnerId : {
-                        [Op.eq] : req.loggedUser.id
-                    }
-                }
-            ]
-        }
-        })
-        .then(data => {
-            res.status(200).json(data)
-        })
-        .catch((err) => {
-            console.log(err, "error ni")
-            next(err);
-        });
-    }
-
     //show list of chatroom based on matched user //GET /friend
     static getChatroom(req, res, next) {
         ChatRoom.findAll({
@@ -101,10 +63,10 @@ class MessageController {
                     friends.push(newObj)
                 }
             });
-            res.status(200).json(friends)
+            // res.status(200).json(friends)
+            res.status(200).json(data)
         })
         .catch((err) => {
-            console.log(err, "error ni")
             next(err);
         });
     }
@@ -128,7 +90,6 @@ class MessageController {
             res.status(200).json(data)
         })
         .catch((err) => {
-            console.log(err, "error ni")
             next(err);
         });
     }
@@ -145,7 +106,6 @@ class MessageController {
             res.status(201).json(data)
         })
         .catch((err) => {
-            console.log(err, "error ni")
             next(err);
         });
     }
