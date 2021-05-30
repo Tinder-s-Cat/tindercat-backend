@@ -13,10 +13,10 @@ async function authentication(req, res, next) {
         req.loggedUser = {
           id: data.id,
           email: data.email,
-          // username: data.username,
+          username: data.username,
           // password: data.password,
-          // location: data.location,
-          // profilePicture: data.profilePicture
+          location: data.location,
+          profilePicture: data.profilePicture
         };
         // console.log('MASUK')
         next();

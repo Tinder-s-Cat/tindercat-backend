@@ -1,9 +1,12 @@
 # TINDER FOR CATS
 ## Available endpoints
 
-> REGISTER & LOGIN
+> USER
 - `POST /register`
 - `POST /login`
+- `GET /friend/:id`
+- `POST /like`
+
 
 > CATS
 - `GET CATS /cat`
@@ -81,9 +84,137 @@ _Response (200 - OK)_
 
 ```
 {
-    "access_token" : "<access_token>"
+    {
+    "access_token": <access_token>,
+    "id": 5,
+    "username": "test3",
+    "location": "jakarta barat",
+    "profilePicture": "https://c.files.bbci.co.uk/12A9B/production/_111434467_gettyimages-1143489763.jpg"
+}
 }
 ```
+
+### GET FRIEND BY ID /friend/:id
+
+>Get friend based on user id
+
+_Request Header_
+
+```
+    access_token(string)
+```
+
+_Request Params_
+
+```
+    id=[integer]
+```
+
+_Response (200 - OK)_
+
+```
+{
+    "id": 1,
+    "username": "test",
+    "location": "pekanbaru",
+    "email": "test@mail.com",
+    "password": "$2b$10$dFBXeqe6OOAo9cDIP3yPb.uu2e9sGUlxpt4Hq6OjBDDj.tgpOe0Za",
+    "profilePicture": "tes",
+    "createdAt": "2021-05-29T04:22:54.437Z",
+    "updatedAt": "2021-05-29T04:22:54.437Z",
+    "Cats": [
+        {
+            "id": 1,
+            "UserId": 1,
+            "name": "milo",
+            "gender": "male",
+            "age": 2,
+            "race": "persia",
+            "status": true,
+            "profilePicture": "asd",
+            "description": "asd",
+            "createdAt": "2021-05-29T05:47:30.870Z",
+            "updatedAt": "2021-05-29T05:47:30.870Z",
+            "IsLike": {
+                "id": 1,
+                "UserId": 1,
+                "CatId": 1,
+                "createdAt": "2021-05-29T05:47:30.870Z",
+                "updatedAt": "2021-05-29T05:47:30.870Z"
+            }
+        },
+        {
+            "id": 2,
+            "UserId": 1,
+            "name": "milky",
+            "gender": "male",
+            "age": 2,
+            "race": "persia",
+            "status": true,
+            "profilePicture": "asd",
+            "description": "asd",
+            "createdAt": "2021-05-29T05:47:30.870Z",
+            "updatedAt": "2021-05-29T05:47:30.870Z",
+            "IsLike": {
+                "id": 5,
+                "UserId": 4,
+                "CatId": 2,
+                "createdAt": "2021-05-29T23:52:12.485Z",
+                "updatedAt": "2021-05-29T23:52:12.485Z"
+            }
+        },
+        {
+            "id": 3,
+            "UserId": 1,
+            "name": "ucing",
+            "gender": "female",
+            "age": 2,
+            "race": "persia",
+            "status": true,
+            "profilePicture": "asd",
+            "description": "asd",
+            "createdAt": "2021-05-29T05:47:30.870Z",
+            "updatedAt": "2021-05-29T05:47:30.870Z",
+            "IsLike": {
+                "id": 3,
+                "UserId": 1,
+                "CatId": 3,
+                "createdAt": "2021-05-29T10:42:28.288Z",
+                "updatedAt": "2021-05-29T10:42:28.288Z"
+            }
+        }
+    ]
+}
+```
+
+### POST LIKE /like
+
+> add like to islikes and add or update status to ismatches
+
+_Request Header_
+
+```
+    access_token(string)
+```
+
+_Request Body_
+
+```
+{
+    UserId:1
+    CatId:2
+}
+```
+
+_Response (200 - OK)_
+
+```
+{
+    "message": "Congratulation You Are Match"
+}
+```
+
+
 
 ### GET CATS /cat
 
@@ -331,40 +462,6 @@ _Response (200 - OK)_
     "description": "vodka mencari teman bermain :)",
     "createdAt": "2021-05-29T06:35:36.967Z",
     "updatedAt": "2021-05-29T15:52:10.497Z"
-}
-```
-
-### DELETE CATS /cat/:id
-
-> delete cat based on ID
-
-_Request Header_
-
-```
-    access_token(string)
-```
-
-_Request Body_
-
-```
-{
-
-    not needed
-
-}
-```
-
-_Request Params_
-
-```
-    id=[integer]
-```
-
-_Response (200 - OK)_
-
-```
-{
-  message: "Cat successfully deleted"
 }
 ```
 
