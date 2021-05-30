@@ -1,13 +1,13 @@
 const request = require("supertest");
 const app = require("../app");
 const { generateToken } = require("../helpers/jwt");
-const { User } = require("../models");
+const { User, ChatRoom, IsMatch } = require("../models");
 const clearUser = require("./helper/clearUser");
 
 let user_token = "";
 let user2_token = "";
-let chatroomId = "";
-let isMatchId = "";
+let chatroomId = "1";
+let isMatchId = "1";
 
 beforeAll(function (done) {
     User.create({
@@ -82,8 +82,10 @@ describe("getFriends SUCCESS GET/friend", function () {
         let { body, status } = response;
         expect(status).toEqual(200);
         if (body.length >  0) {
+          chatroomId = body[0].id;
           expect(body[0]).toHaveProperty("id")
           expect(body[0]).toHaveProperty("UserId")
+          expect(body[0]).toHaveProperty("IsMatchId")
           expect(body[0]).toHaveProperty("username")
           expect(body[0]).toHaveProperty("location")
           expect(body[0]).toHaveProperty("email")
@@ -116,15 +118,39 @@ describe("getFriends FAIL GET/friend", function () {
   });
 });
 
-describe("getFriends FAIL GET/friend", function () {
-  it("responds with status 500", function (done) {
+
+describe("FAILED /GET chatroom/:id/:isMatch", function () {
+  it("responds with status 200", function (done) {
+    console.log(chatroomId, ">>>>chatroomid")
     request(app)
-      .get("/friend/")
-      .set("access_token", user_token+"1")
+      .get(`/chatroom/${chatroomId}/${isMatchId}`)
+      .set("access_token", user_token)
       .then((response) => {
         let { body, status } = response;
-        expect(status).toEqual(500);
-        expect(body).toHaveProperty("message", "invalid signature");
+        expect(status).toEqual(401);
+        // expect(body).toHaveProperty("message", "invalid signature");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
+
+describe("POST /POST chatroom/:id/:isMatch", function () {
+  it("responds with status 200", function (done) {
+    let input = {
+      message : "pesan ke match"
+    }
+    console.log(chatroomId, ">>>>chatroomid")
+    request(app)
+      .post(`/chatroom/${chatroomId}/${isMatchId}`)
+      .send(input)
+      .set("access_token", user_token)
+      .then((response) => {
+        let { body, status } = response;
+        expect(status).toEqual(401);
+        // expect(body).toHaveProperty("message", "invalid signature");
         done();
       })
       .catch((err) => {

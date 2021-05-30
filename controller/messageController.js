@@ -20,7 +20,7 @@ class MessageController {
                         attributes : ['id', 'username', 'location', 'email', 'profilePicture']
                     }
                 ], where : {
-                    status : "Match",
+                    status : "match",
                     [Op.or] : [
                         {
                             UserId : {
