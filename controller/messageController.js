@@ -41,7 +41,7 @@ class MessageController {
         });
     }
 
-    //show list of chatroom based on matched user
+    //show list of chatroom based on matched user //GET /friend
     static getChatroom(req, res, next) {
         ChatRoom.findAll({
             include: [{
@@ -136,7 +136,7 @@ class MessageController {
     static postMessage(req, res, next) {
         let id = req.params.id
         let data = {
-            UserId : 1,
+            UserId : req.loggedUser.id,
             ChatRoomId : id,
             message : req.body.message
         }
