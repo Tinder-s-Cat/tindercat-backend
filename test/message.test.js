@@ -133,7 +133,7 @@ describe("getFriends FAIL GET/friend", function () {
       .set("access_key", user_token+"1")
       .then((response) => {
         let { body, status } = response;
-        expect(status).toEqual(500);
+        expect(status).toEqual(401);
         done();
       })
       .catch((err) => {

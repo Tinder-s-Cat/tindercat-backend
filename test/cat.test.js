@@ -7,6 +7,8 @@ const clearUser = require("./helper/clearUser");
 let user_token = "";
 let user2_token = "";
 let cat_id = "";
+let user_id = ""
+let user2_id = ""
 
 beforeAll(function (done) {
   User.create({
@@ -30,6 +32,7 @@ beforeAll(function (done) {
         email: data.email,
       };
       const access_token = generateToken(payload);
+      user_id = data.id
       user_token = access_token;
       return User.create({
         email: "test2@mail.com",
@@ -54,6 +57,7 @@ beforeAll(function (done) {
       };
       const access_token = generateToken(payload);
       user2_token = access_token;
+      user2_id = data.id
       done();
     })
     .catch((err) => {
@@ -89,7 +93,7 @@ describe("POST/cat postCats SUCCESS", function () {
       .set("access_token", user_token)
       .then((response) => {
         let { body, status } = response;
-        //   console.log(body)
+          console.log(body.id , "<<<< INI DI POST KUCING")
         expect(status).toEqual(201);
         expect(typeof body).toEqual("object");
         expect(body).toHaveProperty("name");
@@ -202,6 +206,41 @@ describe("POST/cat postCats FAILED because of having an invalid type", function 
   });
 });
 
+//LIKES
+describe("POST /like success", function(){
+  it("responds with status 201", function(done){
+      let userData = {
+        UserId: user_id,
+        CatId: cat_id
+      }                                                                                                               
+  request(app)
+    .post("/like")
+    .send(userData)
+    .set("access_token", user2_token)
+    .set("Accept", "application/json")
+    .then((response) => {
+    //  console.log(user_id, "<<<<< INI DI LIKE")
+    //  console.log(cat_id, "<<<<< INI DI LIKE")
+      let { body, status } = response;
+      expect(status).toEqual(200);
+      expect(typeof body).toEqual("object");
+      // expect(body).toHaveProperty("id");
+      // expect(body).toHaveProperty("username");
+      // expect(body).toHaveProperty("location");
+      // expect(body).toHaveProperty("email");
+      // expect(body).toHaveProperty("profilePicture");
+      expect(body.message).toEqual("Cat Liked");
+      done();
+    })
+    .catch((err) => {
+      // console.log(err, "<<<<<< INI ERR YANG DARI LIKES")
+      done(err);
+    });
+  })
+})
+
+
+
 //GET
 describe("getCats SUCCESS GET/cat", function () {
   it("responds with status 200", function (done) {
@@ -219,6 +258,10 @@ describe("getCats SUCCESS GET/cat", function () {
       });
   });
 });
+
+
+
+
 describe("getCats FAILED because of not having an access token GET/cat", function () {
   it("responds with status 200", function (done) {
     request(app)
@@ -641,6 +684,8 @@ describe("DELETE/cat deleteCats FAILED because of wrong cat ID", function () {
       });
   });
 });
+
+
 
 
 
