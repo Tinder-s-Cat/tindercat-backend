@@ -392,35 +392,22 @@ _Response (200 - OK)_
 
 ```
 [
-  {
-      "id" : 2 [represents ChatroomId]
-      "IsMatchId" : 2,
-      "uid" : "1f9da488-6794-454f-a638-b4a2b109a502",
-      "createdAt": "2021-05-29T06:35:36.967Z",
-      "updatedAt": "2021-05-29T15:52:10.497Z",
-      "IsMatch" : {
-          "id" : 2,
-          "UserId" : 3,
-          "OwnerId" : 2,
-          "status" : "Match",
-          "createdAt": "2021-04-05T03:24:24.764Z",
-            "updatedAt": "2021-04-05T03:24:24.764Z",
-            "User": {
-                "id": 3,
-                "username": "khaer",
-                "location": "Jakarta",
-                "email": "k@mail.com",
-                "profilePicture": "https://lh3.googleusercontent.com/ogw/ADGmqu9v_mymcX9xsd3tpF4AtS8Na3XMCi6dv-hg3BFFVw=s192-c-mo"
-            },
-            "Owner": {
-                "id": 2,
-                "username": "fadel",
-                "location": "Jakarta",
-                "email": "fadel@mail.com",
-                "profilePicture": "https://lh3.googleusercontent.com/ogw/ADGmqu9v_mymcX9xsd3tpF4AtS8Na3XMCi6dv-hg3BFFVw=s192-c-mo"
-            }
-      }
-  }
+    {
+        "id": 2 [represents ChatroomId],
+        "UserId": 2,
+        "username": "fadel",
+        "location": "Jakarta",
+        "email": "fadel@mail.com",
+        "profilePicture": "https://lh3.googleusercontent.com/ogw/ADGmqu9v_mymcX9xsd3tpF4AtS8Na3XMCi6dv-hg3BFFVw=s192-c-mo"
+    },
+    {
+        "id": 4,
+        "UserId": 1,
+        "username": "emiliakhaer",
+        "location": "Jakarta",
+        "email": "emil@mail.com",
+        "profilePicture": "https://lh3.googleusercontent.com/ogw/ADGmqu9v_mymcX9xsd3tpF4AtS8Na3XMCi6dv-hg3BFFVw=s192-c-mo"
+    }
 ]
 ```
 
