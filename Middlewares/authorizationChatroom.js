@@ -6,7 +6,7 @@ async function authChatroom(req, res, next) {
     let chatroomId = +req.params.id;
     const findIsMatch = await IsMatch.findOne({
       where :  {
-        status : "Match",
+        status : "match",
         id : isMatchId
       }
     })
