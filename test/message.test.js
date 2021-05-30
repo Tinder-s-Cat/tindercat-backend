@@ -87,13 +87,18 @@ beforeAll(function (done) {
 });
 
 afterAll(function (done) {
-  clearUser()
-    .then(function () {
-      done();
+  if(process.env.NODE_ENV === 'test') {
+    User.destroy({ where : {}})
+    IsMatch.destroy({ where : {}})
+    Message.destroy({ where : {}})
+    ChatRoom.destroy({ where : {}})
+    .then(() => {
+      done()
     })
-    .catch((err) => {
-      done(err);
-    });
+    .catch(err => {
+      done(err)
+    })
+  }
 });
 
 //GET /friend success
@@ -133,7 +138,7 @@ describe("getFriends FAIL GET/friend", function () {
       .set("access_key", user_token+"1")
       .then((response) => {
         let { body, status } = response;
-        expect(status).toEqual(500);
+        expect(status).toEqual(401);
         done();
       })
       .catch((err) => {
