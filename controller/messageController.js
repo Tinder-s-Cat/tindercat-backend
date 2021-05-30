@@ -44,6 +44,7 @@ class MessageController {
                 if (matchObj.UserId !== req.loggedUser.id) {
                     let newObj = {
                         id : el.id,
+                        IsMatchId : el.IsMatchId,
                         UserId : matchObj.UserId,
                         username : matchObj.User.dataValues.username,
                         location : matchObj.User.dataValues.location,
@@ -54,6 +55,7 @@ class MessageController {
                 } else {
                     let newObj = {
                         id : el.id,
+                        IsMatchId : el.IsMatchId,
                         UserId : matchObj.OwnerId,
                         username : matchObj.Owner.dataValues.username,
                         location : matchObj.Owner.dataValues.location,
@@ -63,8 +65,8 @@ class MessageController {
                     friends.push(newObj)
                 }
             });
-            // res.status(200).json(friends)
-            res.status(200).json(data)
+            res.status(200).json(friends)
+            // res.status(200).json(data)
         })
         .catch((err) => {
             next(err);
