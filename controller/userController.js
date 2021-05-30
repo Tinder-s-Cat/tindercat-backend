@@ -42,7 +42,7 @@ class userController {
                   id: data.id,
                   email: data.email,
                 };
-                res.status(200).json({ access_token: generateToken(payload), id: data.id, username: data.username, location: data.location});
+                res.status(200).json({ access_token: generateToken(payload), id: data.id, username: data.username, location: data.location, profilePicture: data.profilePicture});
               } 
               else {
                   
