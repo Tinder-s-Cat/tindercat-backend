@@ -1,6 +1,7 @@
 const { comparePassword } = require("../helpers/bcrypt");
+const { v4: uuidv4 } = require('uuid');
 const { generateToken, verifyToken } = require("../helpers/jwt")
-const {User, IsMatch, Cat, IsLike} = require ('../models');
+const {User, IsMatch, Cat, IsLike, ChatRoom} = require ('../models');
 const cat = require("../models/cat");
 
 class userController {
@@ -14,7 +15,6 @@ class userController {
         }
         User.create(input)
         .then((data)=>{
-			console.log(new Date());
             res.status(201).json(data)
         })
         .catch((err) => {
@@ -57,7 +57,6 @@ class userController {
       	}
 	// static readAll(req, res, next) {
 	// 	const { id } = req.loggedUser
-	// 	console.log("masuk id", id);
 	// 	IsMatch.findAll({
 	// 		where:{
 	// 			UserId: id
@@ -94,6 +93,7 @@ class userController {
 
 	static postLikesToOneCat(req, res, next) {
 		const { UserId, CatId } = req.body
+    let idMatchToRoom = undefined
     let message = "Cat Liked"
 		IsLike.findOne({
 			where:{
@@ -107,9 +107,7 @@ class userController {
 						UserId,
 						CatId
 					},next)
-				} else {
-					res.status(400).json({message: 'Cat Ready Liked'})
-				}
+				} 
 			})
 			.then(() => {
         return IsMatch.findOne({
@@ -136,8 +134,39 @@ class userController {
             where: {
               UserId,
               OwnerId: +req.loggedUser.id,
-            }
+            },
+            returning: true,
+            plain: true
           })
+        }
+      })
+      .then((dataMatch) => {
+        if(message==="Congratulation You Are Match"){
+        //   console.log(">>>>>>>>>dataMacth", dataMatch[1].dataValues.id);
+        // } else {
+        //   res.status(200).json({message})
+        idMatchToRoom = dataMatch[1].dataValues.id
+        return ChatRoom.findOne({
+          where: {
+            IsMatchId: dataMatch[1].dataValues.id
+          }
+        })
+        //  return ChatRoom.create({
+        //   uid: uuidv4(),
+        //   IsMatchId: dataMatch[1].dataValues.id
+        //  })
+        } else {
+          res.status(200).json({message})
+        }
+      })
+      .then((isReadyRoom)=>{
+        if(isReadyRoom===null) {
+          return ChatRoom.create({
+              uid: uuidv4(),
+              IsMatchId: idMatchToRoom
+             })
+        } else {
+          res.status(200).json({message: "You Are Ready Match Before"})
         }
       })
       .then(() => {
