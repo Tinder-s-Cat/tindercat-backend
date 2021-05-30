@@ -3,44 +3,6 @@ const { v4: uuidv4 } = require('uuid');
 const { Op } = require("sequelize");
 class MessageController {
     
-    //to show the matched users - gakdipake
-    static getMatched(req, res, next) {
-        IsMatch.findAll({
-            include : [{
-                model : User,
-                as : 'User',
-                attributes : ['id', 'username', 'location', 'email', 'profilePicture']
-            },
-            {
-                model : User,
-                as : 'Owner',
-                attributes : ['id', 'username', 'location', 'email', 'profilePicture']
-            }
-        ], where : {
-            status : "Match",
-            [Op.or] : [
-                {
-                    UserId : {
-                        [Op.eq] : req.loggedUser.id
-                    }
-                },
-                {
-                    OwnerId : {
-                        [Op.eq] : req.loggedUser.id
-                    }
-                }
-            ]
-        }
-        })
-        .then(data => {
-            res.status(200).json(data)
-        })
-        .catch((err) => {
-            console.log(err, "error ni")
-            next(err);
-        });
-    }
-
     //show list of chatroom based on matched user //GET /friend
     static getChatroom(req, res, next) {
         ChatRoom.findAll({
@@ -82,6 +44,7 @@ class MessageController {
                 if (matchObj.UserId !== req.loggedUser.id) {
                     let newObj = {
                         id : el.id,
+                        IsMatchId : el.IsMatchId,
                         UserId : matchObj.UserId,
                         username : matchObj.User.dataValues.username,
                         location : matchObj.User.dataValues.location,
@@ -92,6 +55,7 @@ class MessageController {
                 } else {
                     let newObj = {
                         id : el.id,
+                        IsMatchId : el.IsMatchId,
                         UserId : matchObj.OwnerId,
                         username : matchObj.Owner.dataValues.username,
                         location : matchObj.Owner.dataValues.location,
@@ -102,9 +66,9 @@ class MessageController {
                 }
             });
             res.status(200).json(friends)
+            // res.status(200).json(data)
         })
         .catch((err) => {
-            console.log(err, "error ni")
             next(err);
         });
     }
@@ -128,7 +92,6 @@ class MessageController {
             res.status(200).json(data)
         })
         .catch((err) => {
-            console.log(err, "error ni")
             next(err);
         });
     }
@@ -145,7 +108,6 @@ class MessageController {
             res.status(201).json(data)
         })
         .catch((err) => {
-            console.log(err, "error ni")
             next(err);
         });
     }
