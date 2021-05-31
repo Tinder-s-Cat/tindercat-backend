@@ -1,5 +1,5 @@
 const {Cat, User} = require ('../models')
-
+const { upload } = require('../helpers/imgUpload')
 class catController {
     static getCats(req,res,next){
         Cat.findAll({
@@ -59,6 +59,21 @@ class catController {
           }
         });
         
+    }
+    static imgUpload(req, res, next) {
+        // call helper to upload image
+        upload(req, res, (err) => {
+          if (err) {
+              console.log(err, ">>>>> err upload image")
+              next(err);
+          } else {
+              if (req.file === undefined) {
+                  res.status(400).json({ msg : "bad request, no file is selected" });
+              } else {
+                  res.status(201).json(req.file.filename);
+              }
+          }
+        })
     }
     static putCats(req,res,next){
       let input = {
