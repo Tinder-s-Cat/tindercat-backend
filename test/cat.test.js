@@ -1,12 +1,15 @@
 const request = require("supertest");
 const app = require("../app");
 const { generateToken } = require("../helpers/jwt");
-const { User } = require("../models");
+const { User, IsMatch, Cat } = require("../models");
 const clearUser = require("./helper/clearUser");
 
 let user_token = "";
 let user2_token = "";
 let cat_id = "";
+let cat2_id = ""
+let user_id = ""
+let user2_id = ""
 
 beforeAll(function (done) {
   User.create({
@@ -30,6 +33,7 @@ beforeAll(function (done) {
         email: data.email,
       };
       const access_token = generateToken(payload);
+      user_id = data.id
       user_token = access_token;
       return User.create({
         email: "test2@mail.com",
@@ -54,9 +58,27 @@ beforeAll(function (done) {
       };
       const access_token = generateToken(payload);
       user2_token = access_token;
+      user2_id = data.id
+      return Cat.create({
+        name: "nala",
+        gender: "female",
+        age: 4,
+        race: "siam",
+        status: "true",
+        profilePicture:
+          "https://www.purina.co.uk/sites/default/files/2021-02/CAT%20BREED%20Hero%20Desktop_0015_Persian.jpg",
+        description: "kucing ras persia lucu, umur 1 tahun dijamin sehat",
+        UserId: user2_id
+      })
+    })
+    .then((data)=>{
+      // console.log(data, "<<<< INI LINE 74")
+      cat2_id = data.dataValues.id
+      
       done();
     })
     .catch((err) => {
+      // console.log(err, "<<<<< INI LINE 77")
       done(err);
     });
 });
@@ -89,7 +111,6 @@ describe("POST/cat postCats SUCCESS", function () {
       .set("access_token", user_token)
       .then((response) => {
         let { body, status } = response;
-        //   console.log(body)
         expect(status).toEqual(201);
         expect(typeof body).toEqual("object");
         expect(body).toHaveProperty("name");
@@ -107,6 +128,7 @@ describe("POST/cat postCats SUCCESS", function () {
       });
   });
 });
+
 
 describe("POST/cat postCats FAILED because of not having access token", function () {
   it("responds with status 401", function (done) {
@@ -202,8 +224,89 @@ describe("POST/cat postCats FAILED because of having an invalid type", function 
   });
 });
 
+//LIKES
+describe("POST/like to cat 1 success", function(){
+  it("responds with status 201", function(done){
+      let isLikes = {
+        UserId: user_id,
+        CatId: cat_id
+      }                                                                                                               
+  request(app)
+    .post("/like")
+    .send(isLikes)//kalau ngirim data memang harus sama, karena memang kalau dikirim dari FE userID nya card sama dengan yang punya kucing.
+    .set("access_token", user2_token)
+    .set("Accept", "application/json")
+    .then((response) => {
+    
+      let { body, status } = response;
+      // console.log(response, "<<<< INI LINE 283")
+      expect(status).toEqual(201);
+      expect(typeof body).toEqual("object");
+   
+      // expect(body).toHaveProperty("id");
+      // expect(body).toHaveProperty("username");
+      // expect(body).toHaveProperty("location")
+      expect(body.message).toEqual("Cat Liked");
+      done();
+    })
+    .catch((err) => {
+      // console.log(err, "<<<<<< INI ERR YANG DARI LIKES")
+      done(err);
+    });
+  })
+})
+
+describe("POST/like to cat 2 success", function(){
+  it("responds with status 201", function(done){
+      let isLikes = {
+        UserId: user2_id,
+        CatId: cat2_id
+      }                                                                                                               
+  request(app)
+    .post("/like")
+    .send(isLikes)
+    .set("access_token", user_token)
+    .set("Accept", "application/json")
+    .then((response) => {
+    
+      let { body, status } = response;
+      // console.log(response, "<<<< INI LINE 283")
+      // console.log(body, "<<< LINE 320")
+      expect(status).toEqual(200);
+      expect(typeof body).toEqual("object");
+      expect(body.message).toEqual("You got a new match!");
+      // expect(body.message).toEqual("You got a new match!");
+      done();
+    })
+    .catch((err) => {
+      // console.log(err, "<<<<<< INI ERR YANG DARI LIKES")
+      done(err);
+    });
+  })
+})
+
+//GET FRIEND
+describe("GET/friend/:id getFriend SUCCESS ", function () {
+  it("responds with status 200", function (done) {
+    request(app)
+      .get(`/friend/${user2_id}`)
+      .set("access_token", user_token)
+      .then((response) => {
+        let { body, status } = response;
+        expect(status).toEqual(200);
+        expect(typeof body).toEqual("object");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
+
+
+
 //GET
-describe("getCats SUCCESS GET/cat", function () {
+describe("GET/cat getCats SUCCESS ", function () {
   it("responds with status 200", function (done) {
     request(app)
       .get("/cat")
@@ -219,8 +322,12 @@ describe("getCats SUCCESS GET/cat", function () {
       });
   });
 });
-describe("getCats FAILED because of not having an access token GET/cat", function () {
-  it("responds with status 200", function (done) {
+
+
+
+
+describe("GET/cat getCats FAILED because of not having an access token", function () {
+  it("responds with status 401", function (done) {
     request(app)
       .get("/cat")
 
@@ -411,7 +518,7 @@ describe("PUT/cat putCats FAILED because of an invalid type", function () {
 });
 
 describe("PUT/cat putCats FAILED because of wrong cat ID", function () {
-  it("responds with status 400", function (done) {
+  it("responds with status 404", function (done) {
     let catsData = {
       name: "mengkiW",
       gender: "male",
@@ -453,7 +560,7 @@ describe("PUT/cat putCats FAILED because of unauthorized", function () {
       .set("access_token", user2_token)
       .then((response) => {
         let { body, status } = response;
-        console.log(body)
+        // console.log(body)
         expect(status).toEqual(401);
         expect(body.message).toEqual("Not authorized!");
         done();
@@ -510,7 +617,7 @@ describe("PATCH/cat patchCats FAILED because of not having access token", functi
 });
 
 describe("PATCH/cat patchCats FAILED because of wrong cat ID", function () {
-  it("responds with status 400", function (done) {
+  it("responds with status 404", function (done) {
     let catsData = {
       status: false,
     };
@@ -562,7 +669,7 @@ describe("PATCH/cat patchCats FAILED because of unauthorized", function () {
       .set("access_token", user2_token)
       .then((response) => {
         let { body, status } = response;
-        console.log(body)
+        // console.log(body)
         expect(status).toEqual(401);
         expect(body.message).toEqual("Not authorized!");
         done();
@@ -641,6 +748,8 @@ describe("DELETE/cat deleteCats FAILED because of wrong cat ID", function () {
       });
   });
 });
+
+
 
 
 

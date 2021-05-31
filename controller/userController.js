@@ -34,7 +34,7 @@ class userController {
           },
         })
           .then((data) => {
-            console.log(data)
+            // console.log(data)
             if (data === null) {
               throw { name: "Unauthorized" };
             } else {
@@ -47,7 +47,6 @@ class userController {
                 res.status(200).json({ access_token: generateToken(payload), id: data.id, username: data.username, location: data.location, profilePicture: data.profilePicture});
               } 
               else {
-                  
                 throw { name: "Unauthorized" };
               }
             }
@@ -98,19 +97,22 @@ class userController {
     let message = "Cat Liked"
 		IsLike.findOne({
 			where:{
-				UserId,
+				UserId: req.loggedUser.id,
 				CatId
 			}
 		})
 			.then((islikes) => {
+        // console.log(islikes, "<<< INI DI ISLIKES")
 				if(islikes===null){
+          // console.log("<<< INI DI ISLIKES NULL")
 					return IsLike.create({
-						UserId,
+						UserId: req.loggedUser.id,
 						CatId
 					},next)
 				} 
 			})
 			.then(() => {
+        // console.log( "<<< MASUK THEN SETELAH ISLIKES")
         return IsMatch.findOne({
           where: {
             UserId,
@@ -120,14 +122,17 @@ class userController {
 				// res.status(200).json({message: "Cat Liked"})
 			})
       .then((isMatches) => {
+        // console.log(isMatches, "<<< INI DI ISMATCHES")
         if(isMatches===null){
+          // console.log( "<<< MASUK ISMATCH NULL")
           return IsMatch.create({
             UserId : +req.loggedUser.id,
             OwnerId: UserId,
             status: "pending"
           }, next)
         } else {
-          message = "Congratulation You Are Match"
+          // console.log( "<<< MASUK ELSE ISMATCHES ")
+          message = "You got a new match!"
           return IsMatch.update({
             status: "match"
           },
@@ -142,11 +147,14 @@ class userController {
         }
       })
       .then((dataMatch) => {
-        if(message==="Congratulation You Are Match"){
+        // console.log(dataMatch, "<<< INI DI DATAMATCH")
+        if(message==="You got a new match!"){
         //   console.log(">>>>>>>>>dataMacth", dataMatch[1].dataValues.id);
         // } else {
         //   res.status(200).json({message})
+        // console.log("MASUK DATAMATCH")
         idMatchToRoom = dataMatch[1].dataValues.id
+        console.log(idMatchToRoom)
         return ChatRoom.findOne({
           where: {
             IsMatchId: dataMatch[1].dataValues.id
@@ -157,17 +165,21 @@ class userController {
         //   IsMatchId: dataMatch[1].dataValues.id
         //  })
         } else {
-          res.status(200).json({message})
+          // console.log("MASUK DATAMATCH ELSE")
+          res.status(201).json({message})
         }
       })
       .then((isReadyRoom)=>{
+        // console.log(isReadyRoom, "<<< MASUK ISREADYROOM")
         if(isReadyRoom===null) {
+          // console.log("<<< INI DI ISREADYROOM NULL")
           return ChatRoom.create({
               uid: uuidv4(),
               IsMatchId: idMatchToRoom
              })
         } else {
-          res.status(200).json({message: "You Are Aleady Match Before"})
+          // console.log( "<<< INI DI ISREADYROOM ELSE")
+          res.status(200).json({message: "It seems like you really like this user's cat 😻"})
         }
       })
       .then(() => {

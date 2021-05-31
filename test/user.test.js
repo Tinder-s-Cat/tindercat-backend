@@ -2,6 +2,10 @@ const request = require ("supertest")
 const app = require ('../app')
 const clearUser = require ('./helper/clearUser')
 
+let friend_id = ""
+let user_id = ""
+
+
 beforeAll(function (done) {
     clearUser()
       .then(function () {
@@ -45,6 +49,7 @@ describe("POST /register success", function(){
         expect(body).toHaveProperty("location");
         expect(body).toHaveProperty("email");
         expect(body).toHaveProperty("profilePicture");
+
         done();
       })
       .catch((err) => {
@@ -126,6 +131,7 @@ describe("POST /register register failed because of empty fields", function () {
           let { body, status } = response;
           expect(status).toEqual(200);
           expect(body).toHaveProperty("access_token");
+          user_id = body.id
           done();
         })
         .catch((err) => {
@@ -159,27 +165,9 @@ describe("POST /register register failed because of empty fields", function () {
         });
       });
 
-    //invalid 
-    describe("POST /login login failed because of invalid email or password ", function () {
-        it("responds with status 401", function (done) {
-          let userData = {
-            email: "test@mail.com",
-            password: "passwor",
-          };
-           request(app)
-            .post("/login")
-            .send(userData)
-            .set("Accept", "application/json")
-            .then((response) => {
-              let { body, status } = response;
-            //   console.log(body)
-              expect(status).toEqual(401);
-              expect(body.message).toEqual("Invalid email / password");
-              done();
-            })
-            .catch((err) => {
-                
-              done(err);
-            });
-        });
-      });
+   
+    
+    
+
+
+
