@@ -12,6 +12,7 @@ catRouter.get("/:id",  catController.getCatsById);
 
 
 catRouter.post("/", catController.postCats);
+catRouter.post("/upload", catController.imgUpload);
 // catRouter.use(authorization);
 catRouter.put("/:id", authorization, catController.putCats);
 catRouter.patch("/:id", authorization, catController.patchCats);
