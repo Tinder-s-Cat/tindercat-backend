@@ -127,7 +127,7 @@ class userController {
             status: "pending"
           }, next)
         } else {
-          message = "Congratulation You Are Match"
+          message = "You got a new match!"
           return IsMatch.update({
             status: "match"
           },
@@ -142,7 +142,7 @@ class userController {
         }
       })
       .then((dataMatch) => {
-        if(message==="Congratulation You Are Match"){
+        if(message==="You got a new match!"){
         //   console.log(">>>>>>>>>dataMacth", dataMatch[1].dataValues.id);
         // } else {
         //   res.status(200).json({message})
@@ -167,7 +167,7 @@ class userController {
               IsMatchId: idMatchToRoom
              })
         } else {
-          res.status(200).json({message: "You Are Aleady Match Before"})
+          res.status(200).json({message: "It seems like you really like this user's cat 😻"})
         }
       })
       .then(() => {
