@@ -1,4 +1,3 @@
-const {Cat, User} = require ('../models')
 const { upload } = require('../helpers/imgUpload')
 const {Cat, User, IsMatch} = require ('../models')
 const sequelize = require('../models').sequelize
@@ -121,7 +120,7 @@ class catController {
         // call helper to upload image
         upload(req, res, (err) => {
           if (err) {
-              console.log(err, ">>>>> err upload image")
+              // console.log(err, ">>>>> err upload image")
               next(err);
           } else {
               if (req.file === undefined) {
