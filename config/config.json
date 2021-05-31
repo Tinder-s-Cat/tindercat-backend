@@ -2,7 +2,7 @@
 	"development": {
 		"username": "postgres",
 		"password": "postgres",
-		"database": "tinder-cats-dev",
+		"database": "tinder-cats",
 		"host": "localhost",
 		"dialect": "postgres"
 	},
