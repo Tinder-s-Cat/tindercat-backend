@@ -72,13 +72,13 @@ beforeAll(function (done) {
       })
     })
     .then((data)=>{
-      console.log(data, "<<<< INI LINE 74")
+      // console.log(data, "<<<< INI LINE 74")
       cat2_id = data.dataValues.id
       
       done();
     })
     .catch((err) => {
-      console.log(err, "<<<<< INI LINE 77")
+      // console.log(err, "<<<<< INI LINE 77")
       done(err);
     });
 });
@@ -111,7 +111,6 @@ describe("POST/cat postCats SUCCESS", function () {
       .set("access_token", user_token)
       .then((response) => {
         let { body, status } = response;
-          console.log(body.id , "<<<< INI DI POST KUCING")
         expect(status).toEqual(201);
         expect(typeof body).toEqual("object");
         expect(body).toHaveProperty("name");
@@ -129,46 +128,6 @@ describe("POST/cat postCats SUCCESS", function () {
       });
   });
 });
-
-//POST CAT USER 2 
-// describe("POST/cat postCats SUCCESS", function () {
-//   it("responds with status 201", function (done) {
-//     let catsData = {
-//       name: "nala",
-//       gender: "female",
-//       age: 4,
-//       race: "siam",
-//       status: "true",
-//       profilePicture:
-//         "https://www.purina.co.uk/sites/default/files/2021-02/CAT%20BREED%20Hero%20Desktop_0015_Persian.jpg",
-//       description: "kucing ras persia lucu, umur 1 tahun dijamin sehat",
-//     };
-//     request(app)
-//       .post("/cat")
-//       .send(catsData)
-//       .set("access_token", user2_token)
-//       .then((response) => {
-//         let { body, status } = response;
-//           // console.log(body.id , "<<<< INI DI POST KUCING")
-//         expect(status).toEqual(201);
-//         expect(typeof body).toEqual("object");
-//         expect(body).toHaveProperty("name");
-//         expect(body).toHaveProperty("gender");
-//         expect(body).toHaveProperty("age");
-//         expect(body).toHaveProperty("race");
-//         expect(body).toHaveProperty("status");
-//         expect(body).toHaveProperty("profilePicture");
-//         expect(body).toHaveProperty("description");
-//         cat2_id = body.id;
-//         done();
-//       })
-//       .catch((err) => {
-//         done(err);
-//       });
-//   });
-// });
-
-
 
 
 describe("POST/cat postCats FAILED because of not having access token", function () {
@@ -266,33 +225,27 @@ describe("POST/cat postCats FAILED because of having an invalid type", function 
 });
 
 //LIKES
-describe("POST /like success", function(){
+describe("POST/like to cat 1 success", function(){
   it("responds with status 201", function(done){
       let isLikes = {
-        UserId: user2_id,
+        UserId: user_id,
         CatId: cat_id
       }                                                                                                               
   request(app)
     .post("/like")
-    .send(isLikes)
+    .send(isLikes)//kalau ngirim data memang harus sama, karena memang kalau dikirim dari FE userID nya card sama dengan yang punya kucing.
     .set("access_token", user2_token)
     .set("Accept", "application/json")
     .then((response) => {
     
       let { body, status } = response;
       // console.log(response, "<<<< INI LINE 283")
-      expect(status).toEqual(200);
+      expect(status).toEqual(201);
       expect(typeof body).toEqual("object");
-      IsMatch.create({
-        UserId: user2_id,
-        OwnerId: user_id,
-        status: "pending"
-      })
+   
       // expect(body).toHaveProperty("id");
       // expect(body).toHaveProperty("username");
-      // expect(body).toHaveProperty("location");
-      // expect(body).toHaveProperty("email");
-      // expect(body).toHaveProperty("profilePicture");
+      // expect(body).toHaveProperty("location")
       expect(body.message).toEqual("Cat Liked");
       done();
     })
@@ -303,10 +256,10 @@ describe("POST /like success", function(){
   })
 })
 
-describe("POST /like success", function(){
+describe("POST/like to cat 2 success", function(){
   it("responds with status 201", function(done){
       let isLikes = {
-        UserId: user_id,
+        UserId: user2_id,
         CatId: cat2_id
       }                                                                                                               
   request(app)
@@ -318,20 +271,11 @@ describe("POST /like success", function(){
     
       let { body, status } = response;
       // console.log(response, "<<<< INI LINE 283")
-      console.log(body, "<<< LINE 320")
+      // console.log(body, "<<< LINE 320")
       expect(status).toEqual(200);
       expect(typeof body).toEqual("object");
-      // IsMatch.create({
-      //   UserId: user2_id,
-      //   OwnerId: user_id,
-      //   status: "pending"
-      // })
-      // expect(body).toHaveProperty("id");
-      // expect(body).toHaveProperty("username");
-      // expect(body).toHaveProperty("location");
-      // expect(body).toHaveProperty("email");
-      // expect(body).toHaveProperty("profilePicture");
-      expect(body.message).toEqual("Cat Liked");
+      expect(body.message).toEqual("You got a new match!");
+      // expect(body.message).toEqual("You got a new match!");
       done();
     })
     .catch((err) => {
@@ -341,75 +285,28 @@ describe("POST /like success", function(){
   })
 })
 
-// describe("POST IsMatch /like success", function(){
-//   it("responds with status 201", function(done){
-//       // let isMatch = {
-//       //   UserId: user_id,
-//       //   OwnerId: user2_id,
-//       //   status: "pending"
-//       // }  
-//       let liked = {
-//         UserId: user_id,
-//         CatId: cat2_id
-//       }                                                                                                             
-//   request(app)
-//     .put("/like")
-//     .send(liked)
-//     .set("access_token", user_token)
-//     .set("Accept", "application/json")
-//     .then((response) => {
-
-//       let { body, status } = response;
-//       expect(status).toEqual(404);
-//       expect(typeof body).toEqual("object");
-//       console.log(liked.CatId, "<<<< INI LINE 325")
-//       // expect(body).toHaveProperty("id");
-//       // expect(body).toHaveProperty("username");
-//       // expect(body).toHaveProperty("location");
-//       // expect(body).toHaveProperty("email");
-//       // expect(body).toHaveProperty("profilePicture");
-//       expect(body.message).toEqual("Cat Liked");
-//       done();
-//     })
-//     .catch((err) => {
-//       // console.log(err, "<<<<<< INI ERR YANG DARI LIKES")
-//       done(err);
-//     });
-//   })
-// })
-
-
-
-
-// describe("PUT/cat putCats SUCCESS", function () {
-//   it("responds with status 200", function (done) {
-//     let catsData = {
-//       status: "match",
-//     };
-//     request(app)
-//       .post(`/likes`)
-//       .send(catsData)
-//       .set("access_token", user_token)
-//       .then((response) => {
-//         let { body, status } = response;
-//           console.log(body, "<<<< INI BODY")
-//         expect(status).toEqual(404);
-//         expect(typeof body).toEqual("object");
-//         expect(body.status).toEqual(catsData.status);
-//         expect(body.message).toEqual("You got a new match");
-//         done();
-//       })
-//       .catch((err) => {
-//         done(err);
-//       });
-//   });
-// });
-
+//GET FRIEND
+describe("GET/friend/:id getFriend SUCCESS ", function () {
+  it("responds with status 200", function (done) {
+    request(app)
+      .get(`/friend/${user2_id}`)
+      .set("access_token", user_token)
+      .then((response) => {
+        let { body, status } = response;
+        expect(status).toEqual(200);
+        expect(typeof body).toEqual("object");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
 
 
 
 //GET
-describe("getCats SUCCESS GET/cat", function () {
+describe("GET/cat getCats SUCCESS ", function () {
   it("responds with status 200", function (done) {
     request(app)
       .get("/cat")
@@ -429,8 +326,8 @@ describe("getCats SUCCESS GET/cat", function () {
 
 
 
-describe("getCats FAILED because of not having an access token GET/cat", function () {
-  it("responds with status 200", function (done) {
+describe("GET/cat getCats FAILED because of not having an access token", function () {
+  it("responds with status 401", function (done) {
     request(app)
       .get("/cat")
 
@@ -621,7 +518,7 @@ describe("PUT/cat putCats FAILED because of an invalid type", function () {
 });
 
 describe("PUT/cat putCats FAILED because of wrong cat ID", function () {
-  it("responds with status 400", function (done) {
+  it("responds with status 404", function (done) {
     let catsData = {
       name: "mengkiW",
       gender: "male",
@@ -663,7 +560,7 @@ describe("PUT/cat putCats FAILED because of unauthorized", function () {
       .set("access_token", user2_token)
       .then((response) => {
         let { body, status } = response;
-        console.log(body)
+        // console.log(body)
         expect(status).toEqual(401);
         expect(body.message).toEqual("Not authorized!");
         done();
@@ -720,7 +617,7 @@ describe("PATCH/cat patchCats FAILED because of not having access token", functi
 });
 
 describe("PATCH/cat patchCats FAILED because of wrong cat ID", function () {
-  it("responds with status 400", function (done) {
+  it("responds with status 404", function (done) {
     let catsData = {
       status: false,
     };
@@ -772,7 +669,7 @@ describe("PATCH/cat patchCats FAILED because of unauthorized", function () {
       .set("access_token", user2_token)
       .then((response) => {
         let { body, status } = response;
-        console.log(body)
+        // console.log(body)
         expect(status).toEqual(401);
         expect(body.message).toEqual("Not authorized!");
         done();
