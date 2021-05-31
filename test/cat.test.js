@@ -362,7 +362,7 @@ describe("GET/cat getCats FAILED because of not having an access token", functio
 });
 
 //GET BY ID
-describe("getCatsById SUCCESS GET/cat:id", function () {
+describe("GET/cat:id getCatsById SUCCESS", function () {
   it("responds with status 200", function (done) {
     request(app)
       .get(`/cat/${cat_id}`)
@@ -380,7 +380,7 @@ describe("getCatsById SUCCESS GET/cat:id", function () {
   });
 });
 
-describe("getCatsById FAILED because of not having an access token GET/cat:id", function () {
+describe("GET/cat:id getCatsById FAILED because of not having an access token", function () {
   it("responds with status 200", function (done) {
     request(app)
       .get(`/cat/${cat_id}`)
@@ -414,6 +414,56 @@ describe("GET/cat:id getCatsById FAILED to find cats", function () {
       });
   });
 });
+
+// IMG UPLOAD
+// describe("POST/cat/upload imgupload SUCCESS", function () {
+//   it("responds with status 201", function (done) {
+//     // let catsData = {
+//     //   catImage: "csFl6Y-M_400x400.jpg"
+//     // };
+//     request(app)
+//       .post("/cat/upload")
+//       // .send(catsData)
+//       .attach('name', "csFl6Y-M_400x400.jpg")
+//       .set("access_token", user_token)
+//       .then((response) => {
+//         let { body, status } = response;
+//         expect(status).toEqual(400);
+//         expect(typeof body).toEqual("object");
+//         // expect(body).toHaveProperty("catImage");
+//         // expect(body).toEqual(catsData.catImage);
+//         done();
+//       })
+//       .catch((err) => {
+//         done(err);
+//       });
+//   });
+// });
+
+describe("POST/cat/upload FAILED because of undefined file imgupload", function () {
+  it("responds with status 400", function (done) {
+    let catsData = {
+      catImage: ""
+    };
+    request(app)
+      .post("/cat/upload")
+      .send(catsData)
+      .set("access_token", user_token)
+      .then((response) => {
+        let { body, status } = response;
+        expect(status).toEqual(400);
+        expect(typeof body).toEqual("object");
+        // expect(body).toHaveProperty("catImage");
+        expect(body.msg).toEqual("bad request, no file is selected");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
+
+
 
 //PUT
 describe("PUT/cat putCats SUCCESS", function () {

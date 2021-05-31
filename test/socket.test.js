@@ -132,7 +132,7 @@ describe('Suite of unit tests', function () {
 		done()
 	})
 	afterAll(function (done) {
-		server.detach()
+		server.close()
 	})
 
 	describe('Chat tests', function () {
@@ -163,12 +163,10 @@ describe('Suite of unit tests', function () {
 			}
 			socket.emit('join-room', chatRoomId)
 			socket.emit('send-message', chatMessage)
-
-			socket.on('receive-message', (dataRes) => {
+	
+			socket.on('receive-message-fail', (dataRes) => {
 				expect(dataRes).toBeInstanceOf(Object)
-				expect(dataRes).toHaveProperty('id')
-				expect(dataRes).toHaveProperty('UserId')
-				expect(dataRes).toHaveProperty('ChatRoomId')
+				expect(dataRes).toHaveProperty('error')
 				done()
 			})
 		})

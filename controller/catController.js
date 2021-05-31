@@ -120,7 +120,7 @@ class catController {
         // call helper to upload image
         upload(req, res, (err) => {
           if (err) {
-              console.log(err, ">>>>> err upload image")
+              // console.log(err, ">>>>> err upload image")
               next(err);
           } else {
               if (req.file === undefined) {
