@@ -104,7 +104,7 @@ class userController {
 			.then((islikes) => {
 				if(islikes===null){
 					return IsLike.create({
-						UserId,
+						UserId: req.loggedUser.id,
 						CatId
 					},next)
 				} 
