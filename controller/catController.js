@@ -1,4 +1,3 @@
-const {Cat, User} = require ('../models')
 const { upload } = require('../helpers/imgUpload')
 const {Cat, User, IsMatch} = require ('../models')
 const sequelize = require('../models').sequelize

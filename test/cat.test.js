@@ -224,6 +224,24 @@ describe("POST/cat postCats FAILED because of having an invalid type", function 
   });
 });
 
+describe(`POST /cat/upload`, function () {
+  it(`Success update data with status 201`, function (done) {
+    
+    request(app)
+      .post(`/cat/upload`)
+      .attach('catImage', './test/image1.png')
+      .set("access_token", user_token)
+      .end((err, res) => {
+        if (err) {
+          console.log('Error occured at PATCH users expIncrease test')
+          done(err)
+        }
+        expect(res.status).toEqual(201)
+        done()
+      })
+  }, 60000)
+})
+
 //LIKES
 describe("POST/like to cat 1 success", function(){
   it("responds with status 201", function(done){
