@@ -1,8 +1,9 @@
 const {Cat, User, IsMatch} = require ('../models')
 const sequelize = require('../models').sequelize
 const { Op } = require("sequelize");
-const { uploadFile } = require ("../helpers/S3")
 
+const distance =require('../middlewares/geolib')
+const { uploadFile } = require ("../helpers/S3")
 
 class catController {
   static getCats(req,res,next){
@@ -63,9 +64,18 @@ class catController {
       })
       .then((data) => {
         anotherCats = data.map((cats)=>cats)
-        const showCard = likerCats.concat(anotherCats)
-        // const dataid = data.map((el)=>el.dataValues.id)
-        // console.log(dataid, "<<<<<<<");
+        let showCard = likerCats.concat(anotherCats)
+        showCard.forEach((el)=>{
+          el.dataValues.distance = distance({
+            latitude: parseFloat(req.loggedUser.lat),
+            longitude: parseFloat(req.loggedUser.lng)
+          },
+          {
+            latitude: parseFloat(el.dataValues.User.dataValues.lat),
+            longitude: parseFloat(el.dataValues.User.dataValues.lng)
+          })
+        })
+
         res.status(200).json(showCard);
       })
       .catch((err) => {

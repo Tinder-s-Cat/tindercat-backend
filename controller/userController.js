@@ -3,6 +3,8 @@ const { v4: uuidv4 } = require('uuid');
 const { generateToken, verifyToken } = require("../helpers/jwt")
 const {User, IsMatch, Cat, IsLike, ChatRoom} = require ('../models');
 const cat = require("../models/cat");
+const distance =require('../middlewares/geolib')
+
 
 class userController {
     static register (req,res,next){
@@ -44,7 +46,7 @@ class userController {
                   id: data.id,
                   email: data.email,
                 };
-                res.status(200).json({ access_token: generateToken(payload), id: data.id, username: data.username, location: data.location, profilePicture: data.profilePicture});
+                res.status(200).json({ access_token: generateToken(payload), id: data.id, username: data.username, location: data.location, profilePicture: data.profilePicture, lat:data.lat, lng: data.lng});
               } 
               else {
                 throw { name: "Unauthorized" };
@@ -84,6 +86,14 @@ class userController {
 			]
 		})
 			.then((selectedUser) => {
+        selectedUser.dataValues.distance = distance({
+          latitude: parseFloat(req.loggedUser.lat),
+          longitude: parseFloat(req.loggedUser.lng)
+        },
+        {
+          latitude: parseFloat(selectedUser.dataValues.lat),
+          longitude: parseFloat(selectedUser.dataValues.lng)
+        })
 				res.status(200).json(selectedUser)
 			})
 			.catch((err) => {

@@ -30,14 +30,20 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     location: {
-    type: DataTypes.STRING,
-    validate : {
-      notEmpty : {
-        args: true,
-        msg : "Location should not be empty"
+      type: DataTypes.STRING,
+      validate : {
+        notEmpty : {
+          args: true,
+          msg : "Location should not be empty"
+        }
       }
-    }
-  },
+    },
+    lat: {
+      type: DataTypes.STRING,
+    },
+    lng: {
+      type: DataTypes.STRING,
+    },
     email: {
       type : DataTypes.STRING,
       unique: { args: true, msg: "email already exists" },
