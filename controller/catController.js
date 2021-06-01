@@ -129,10 +129,10 @@ class catController {
     }
     static async imgUpload(req, res, next) {
         const file = req.file;
-        console.log(file, ">>>>>file")
+        // console.log(file, ">>>>>file")
         const result = await uploadFile(file)
         if (result) {
-          console.log(result)
+          // console.log(result)
           res.status(201).json(req.file.filename);
         } else {
           next(err);

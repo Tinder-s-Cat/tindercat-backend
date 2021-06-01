@@ -133,6 +133,7 @@ describe('Suite of unit tests', function () {
 	})
 	afterAll(function (done) {
 		server.close()
+		done()
 	})
 
 	describe('Chat tests', function () {
