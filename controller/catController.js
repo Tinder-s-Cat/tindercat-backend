@@ -1,8 +1,7 @@
-const { upload } = require('../helpers/imgUpload')
 const {Cat, User, IsMatch} = require ('../models')
 const sequelize = require('../models').sequelize
 const { Op } = require("sequelize");
-const {uploadFile} = require ("../helpers/S3")
+const { uploadFile } = require ("../helpers/S3")
 
 
 class catController {
@@ -118,20 +117,12 @@ class catController {
         });
         
     }
-    static imgUpload(req, res, next) {
-        // call helper to upload image
-        upload(req, res, (err) => {
-          if (err) {
-              // console.log(err, ">>>>> err upload image")
-              next(err);
-          } else {
-              if (req.file === undefined) {
-                  res.status(400).json({ msg : "bad request, no file is selected" });
-              } else {
-                  res.status(201).json(req.file.filename);
-              }
-          }
-        })
+    static async imgUpload(req, res, next) {
+        const file = req.file;
+        console.log(file, ">>>>>file")
+        const result = await uploadFile(file)
+        console.log(result)
+        res.status(201).json(req.file.filename);
     }
     static putCats(req,res,next){
       let input = {
