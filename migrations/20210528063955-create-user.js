@@ -16,6 +16,12 @@ module.exports = {
       location: {
         type: Sequelize.STRING
       },
+      lat: {
+        type: Sequelize.STRING
+      },
+      lng: {
+        type: Sequelize.STRING
+      },
       email: {
         unique: true,
         allowNull : false,
