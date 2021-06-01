@@ -38,8 +38,8 @@ class catController {
         // console.log(" liker user >>>>>>>>>>>>>", likerId, loggedUserCats, likerId.concat(loggedUserCats), "<<<<<<<<<<<<< liker user ");
         if(likerId.length>0){
 
-          if(req.body.gender){
-            // console.log(" gender >>>>>>>>>>>>>", req.body.gender, "<<<<<<<<<<<<< gender ");
+          if(req.query.gender){
+            // console.log(" gender >>>>>>>>>>>>>", req.query.gender, "<<<<<<<<<<<<< gender ");
             return Cat.findAll({
               where: {
                 id: {
@@ -48,7 +48,7 @@ class catController {
                 UserId: {
                   [Op.in]:likerId
                 },
-                gender: req.body.gender
+                gender: req.query.gender
               }, //get cats except loggedUser Cats
               include: {
                 model: User,
@@ -82,11 +82,11 @@ class catController {
         likerCats = liker.map((cats)=>cats)
         likerCatsId = liker.map((cats)=>cats.dataValues.id)
         // console.log(">>>>>> likerCatsId ", likerCatsId);
-        if(req.body.gender){
+        if(req.query.gender){
           return Cat.findAll({
             where: {
               id: {[Op.notIn]: loggedUserCats.concat(likerCatsId)}, //get cats except loggedUser Cats
-              gender: req.body.gender
+              gender: req.query.gender
             }, 
             include: {
               model: User,
