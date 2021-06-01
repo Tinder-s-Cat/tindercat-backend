@@ -132,12 +132,57 @@ class catController {
         // console.log(file, ">>>>>file")
         const result = await uploadFile(file)
         if (result) {
-          // console.log(result)
-          res.status(201).json(req.file.filename);
+          console.log(result)
+          res.status(201).json({ 
+            message: "image sucessfully uploaded",
+            img : result.Location
+          });
         } else {
           next(err);
         }
     }
+
+    static async postCatAndImage(req,res,next){
+      const { name, gender, age, race, description } = req.body;
+      if (name && gender && age && race && description) {
+        if (req.file) {
+          const file = req.file;
+          console.log(file, ">>>>>file")
+          const result = await uploadFile(file)
+          if (result) {
+            console.log(result)
+            let input = {
+              name: req.body.name,
+              gender: req.body.gender,
+              age: req.body.age,
+              race: req.body.race,
+              profilePicture: result.Location,
+              description: req.body.description,
+              UserId: req.loggedUser.id
+            };
+            Cat.create(input)
+            .then((data) => {
+              res.status(201).json(data);
+            })
+            .catch((err) => {
+              if (err.name === "SequelizeValidationError") {
+                next(err);
+              } else {
+                next(err);
+              }
+            });
+          } else {
+            next(err);
+          } 
+        } else {
+          res.status(500).json({ message : "all data is required"});
+        } 
+      } else {
+        res.status(500).json({ message : "all data is required"});
+      }
+        
+    }
+
     static putCats(req,res,next){
       let input = {
         name: req.body.name,
