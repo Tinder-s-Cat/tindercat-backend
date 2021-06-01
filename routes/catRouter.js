@@ -3,6 +3,7 @@ const catRouter = express.Router();
 const catController = require("../controller/catController");
 const authentication = require("../Middlewares/authentication");
 const authorization = require("../Middlewares/authorization");
+const { upload } = require("../Middlewares/imgUpload");
 
 
 
@@ -12,7 +13,8 @@ catRouter.get("/:id",  catController.getCatsById);
 
 
 catRouter.post("/", catController.postCats);
-catRouter.post("/upload", catController.imgUpload);
+catRouter.post("/upload", upload, catController.imgUpload);
+// catRouter.post("/upload", catController.imgUpload);
 // catRouter.use(authorization);
 catRouter.put("/:id", authorization, catController.putCats);
 catRouter.patch("/:id", authorization, catController.patchCats);
