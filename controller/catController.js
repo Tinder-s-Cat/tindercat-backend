@@ -2,6 +2,8 @@ const { upload } = require('../helpers/imgUpload')
 const {Cat, User, IsMatch} = require ('../models')
 const sequelize = require('../models').sequelize
 const { Op } = require("sequelize");
+const {uploadFile} = require ("../helpers/S3")
+
 
 class catController {
   static getCats(req,res,next){
