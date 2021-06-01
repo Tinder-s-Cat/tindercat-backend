@@ -40,8 +40,10 @@ _Request Body_
 {
     email:"test3@mail.com"
     password:"password"
-    location:"jakarta barat"
-    username:"test3"
+    location:"jakarta barat",
+    lat: "6.1599934",
+    lng: "106.6872183",
+    username:"test3",
     profilePicture:"https://c.files.bbci.co.uk/12A9B/production/_111434467_gettyimages-1143489763.jpg"
 }
 ```
@@ -117,6 +119,8 @@ _Response (200 - OK)_
     "id": 1,
     "username": "test",
     "location": "pekanbaru",
+    "lat": "0.5941795",
+    "lng": "101.6436178",
     "email": "test@mail.com",
     "password": "$2b$10$dFBXeqe6OOAo9cDIP3yPb.uu2e9sGUlxpt4Hq6OjBDDj.tgpOe0Za",
     "profilePicture": "tes",
@@ -156,11 +160,11 @@ _Response (200 - OK)_
             "createdAt": "2021-05-29T05:47:30.870Z",
             "updatedAt": "2021-05-29T05:47:30.870Z",
             "IsLike": {
-                "id": 5,
-                "UserId": 4,
+                "id": 2,
+                "UserId": 1,
                 "CatId": 2,
-                "createdAt": "2021-05-29T23:52:12.485Z",
-                "updatedAt": "2021-05-29T23:52:12.485Z"
+                "createdAt": "2021-05-29T08:32:57.406Z",
+                "updatedAt": "2021-05-29T08:32:57.406Z"
             }
         },
         {
@@ -183,7 +187,8 @@ _Response (200 - OK)_
                 "updatedAt": "2021-05-29T10:42:28.288Z"
             }
         }
-    ]
+    ],
+    "distance": 26
 }
 ```
 
@@ -237,50 +242,82 @@ _Response (200 - OK)_
 ```
 [
     {
-        "id": 1,
-        "UserId": 1,
-        "name": "mengki",
-        "gender": "male",
-        "age": 3,
-        "race": "domestic",
-        "status": true,
-        "profilePicture": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/American_Shorthair.jpg/1200px-American_Shorthair.jpg",
-        "description": "kucing jantan umur 3 tahun cari pasangan, dijamin sehat",
-        "createdAt": "2021-05-29T06:29:31.709Z",
-        "updatedAt": "2021-05-29T06:29:31.709Z",
-        "User": {
-            "id": 1,
-            "username": "test3",
-            "location": "jakarta barat",
-            "email": "test3@mail.com",
-            "password": "$2b$10$vMGN3Ns/F1GqsNeZqBapDuhlVwjv1pqnhlgSEnlTJwunjtCdA3ZOq",
-            "profilePicture": "https://c.files.bbci.co.uk/12A9B/production/_111434467_gettyimages-1143489763.jpg",
-            "createdAt": "2021-05-29T06:08:35.987Z",
-            "updatedAt": "2021-05-29T06:08:35.987Z"
-        }
-    },
-    {
-        "id": 4,
+        "id": 5,
         "UserId": 2,
-        "name": "Pikachu",
+        "name": "black",
         "gender": "female",
         "age": 2,
-        "race": "sphynx",
+        "race": "anggora",
         "status": true,
-        "profilePicture": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/American_Shorthair.jpg/1200px-American_Shorthair.jpg",
-        "description": "ayo kenalan!!",
-        "createdAt": "2021-05-29T09:13:22.324Z",
-        "updatedAt": "2021-05-29T09:21:24.122Z",
+        "profilePicture": "asda",
+        "description": "asd",
+        "createdAt": "2021-05-29T05:47:30.870Z",
+        "updatedAt": "2021-05-29T05:47:30.870Z",
         "User": {
             "id": 2,
-            "username": "test3",
-            "location": "jakarta barat",
-            "email": "test3@mail.com",
-            "password": "$2b$10$DtDM3H1OKMLrKsj1iwcYFuvFzTOZgldr57VfJiOLRqWcWKUVeeuwy",
-            "profilePicture": "https://c.files.bbci.co.uk/12A9B/production/_111434467_gettyimages-1143489763.jpg",
-            "createdAt": "2021-05-29T09:11:52.415Z",
-            "updatedAt": "2021-05-29T09:11:52.415Z"
-        }
+            "username": "asd",
+            "location": "pekanbaru",
+            "lat": "0.8293671",
+            "lng": "101.3443131",
+            "email": "asd@mail.com",
+            "password": "$2b$10$aENfJudDMNNbXJbHP9y5zOgqpgxjGEe5j.AtSV5dhD8p.F9mq6p7G",
+            "profilePicture": "asd",
+            "createdAt": "2021-05-29T05:47:30.870Z",
+            "updatedAt": "2021-05-29T05:47:30.870Z"
+        },
+        "distance": 20
+    },
+    {
+        "id": 1,
+        "UserId": 1,
+        "name": "milo",
+        "gender": "male",
+        "age": 2,
+        "race": "persia",
+        "status": true,
+        "profilePicture": "asd",
+        "description": "asd",
+        "createdAt": "2021-05-29T05:47:30.870Z",
+        "updatedAt": "2021-05-29T05:47:30.870Z",
+        "User": {
+            "id": 1,
+            "username": "test",
+            "location": "pekanbaru",
+            "lat": "0.5941795",
+            "lng": "101.6436178",
+            "email": "test@mail.com",
+            "password": "$2b$10$dFBXeqe6OOAo9cDIP3yPb.uu2e9sGUlxpt4Hq6OjBDDj.tgpOe0Za",
+            "profilePicture": "tes",
+            "createdAt": "2021-05-29T04:22:54.437Z",
+            "updatedAt": "2021-05-29T04:22:54.437Z"
+        },
+        "distance": 26
+    },
+    {
+        "id": 2,
+        "UserId": 1,
+        "name": "milky",
+        "gender": "male",
+        "age": 2,
+        "race": "persia",
+        "status": true,
+        "profilePicture": "asd",
+        "description": "asd",
+        "createdAt": "2021-05-29T05:47:30.870Z",
+        "updatedAt": "2021-05-29T05:47:30.870Z",
+        "User": {
+            "id": 1,
+            "username": "test",
+            "location": "pekanbaru",
+            "lat": "0.5941795",
+            "lng": "101.6436178",
+            "email": "test@mail.com",
+            "password": "$2b$10$dFBXeqe6OOAo9cDIP3yPb.uu2e9sGUlxpt4Hq6OjBDDj.tgpOe0Za",
+            "profilePicture": "tes",
+            "createdAt": "2021-05-29T04:22:54.437Z",
+            "updatedAt": "2021-05-29T04:22:54.437Z"
+        },
+        "distance": 26
     }
 ]
 ```
