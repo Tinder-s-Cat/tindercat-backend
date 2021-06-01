@@ -123,11 +123,47 @@ class catController {
         const result = await uploadFile(file)
         if (result) {
           console.log(result)
-          res.status(201).json({ message: "image is sucessfully uploaded" });
+          res.status(201).json({ 
+            message: "image is sucessfully uploaded",
+            img : result.Location
+          });
         } else {
           next(err);
         }
     }
+
+    static async postCatAndImage(req,res,next){
+      const file = req.file;
+        console.log(file, ">>>>>file")
+        const result = await uploadFile(file)
+        if (result) {
+          console.log(result)
+          let input = {
+            name: req.body.name,
+            gender: req.body.gender,
+            age: req.body.age,
+            race: req.body.race,
+            status: req.body.status,
+            profilePicture: result.Location,
+            description: req.body.description,
+            UserId: req.loggedUser.id
+          };
+          Cat.create(input)
+          .then((data) => {
+            res.status(201).json(data);
+          })
+          .catch((err) => {
+            if (err.name === "SequelizeValidationError") {
+              next(err);
+            } else {
+              next(err);
+            }
+          });
+        } else {
+          next(err);
+      } 
+    }
+
     static putCats(req,res,next){
       let input = {
         name: req.body.name,
