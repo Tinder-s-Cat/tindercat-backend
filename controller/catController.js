@@ -11,7 +11,9 @@ class catController {
     const randCatsLength = Math.floor(Math.random() * 10) + 5
     let loggedUserCats = []
     let likerCats = []
+    let likerCatsId = []
     let anotherCats = []
+    let likerId = []
     Cat.findAll({
       where: {
         UserId: req.loggedUser.id
@@ -29,38 +31,89 @@ class catController {
         })
       })
       .then((likedCat) =>{
-        const likerId = likedCat.map((data) => data.dataValues.UserId)
+        // console.log("Liked car>>>>>>>", likedCat);
+        likerId = likedCat.map((data) => data.dataValues.UserId)
+        // likerCatsId = likedCat.map((data) => data.dataValues.id)
         // console.log("liked cat>>>>>>>", likerId , randLikerLength, randCatsLength, "<<<<<<<<< liked chat");
+        // console.log(" liker user >>>>>>>>>>>>>", likerId, loggedUserCats, likerId.concat(loggedUserCats), "<<<<<<<<<<<<< liker user ");
         if(likerId.length>0){
+
+          if(req.body.gender){
+            // console.log(" gender >>>>>>>>>>>>>", req.body.gender, "<<<<<<<<<<<<< gender ");
+            return Cat.findAll({
+              where: {
+                id: {
+                  [Op.notIn]: loggedUserCats,
+                },
+                UserId: {
+                  [Op.in]:likerId
+                },
+                gender: req.body.gender
+              }, //get cats except loggedUser Cats
+              include: {
+                model: User,
+                required: true
+              },
+              order: sequelize.random(),
+              limit: randLikerLength
+            })
+          } else {
+            // console.log(">>>>>>>> NOT Have Input Gender <<<<<<<<<<");
+            return Cat.findAll({
+              where: {
+                id: {
+                  [Op.notIn]: loggedUserCats,
+                },
+                UserId: {
+                  [Op.in]:likerId
+                }
+              }, //get cats except loggedUser Cats
+              include: {
+                model: User,
+                required: true
+              },
+              order: sequelize.random(),
+              limit: randLikerLength
+            })
+          }
+        } else return []
+      })
+      .then((liker)=>{
+        likerCats = liker.map((cats)=>cats)
+        likerCatsId = liker.map((cats)=>cats.dataValues.id)
+        // console.log(">>>>>> likerCatsId ", likerCatsId);
+        if(req.body.gender){
           return Cat.findAll({
-            where: { id: {
-              [Op.notIn]: loggedUserCats,
-              [Op.in]:likerId
-            } }, //get cats except loggedUser Cats
+            where: {
+              id: {[Op.notIn]: loggedUserCats.concat(likerCatsId)}, //get cats except loggedUser Cats
+              gender: req.body.gender
+            }, 
             include: {
               model: User,
               required: true
             },
             order: [
               ['createdAt', 'DESC']
-            ]
+            ],
+            order: sequelize.random(),
+            limit: randCatsLength
           })
-        } else return []
-      })
-      .then((liker)=>{
-        likerCats = liker.map((cats)=>cats)
-        return Cat.findAll({
-          where: { id: {[Op.notIn]: loggedUserCats} }, //get cats except loggedUser Cats
-          include: {
-            model: User,
-            required: true
-          },
-          order: [
-            ['createdAt', 'DESC']
-          ],
-          order: sequelize.random(),
-          limit: randCatsLength
-        })
+        } else {
+          return Cat.findAll({
+            where: {
+              id: {[Op.notIn]: loggedUserCats.concat(likerCatsId)}, //get cats except loggedUser Cats
+            }, 
+            include: {
+              model: User,
+              required: true
+            },
+            order: [
+              ['createdAt', 'DESC']
+            ],
+            order: sequelize.random(),
+            limit: randCatsLength
+          })
+        }
       })
       .then((data) => {
         anotherCats = data.map((cats)=>cats)
