@@ -7,6 +7,7 @@ const { uploadFile } = require ("../helpers/S3")
 
 class catController {
   static getCats(req,res,next){
+    console.log(req.query)
     const randLikerLength = Math.floor(Math.random() * 5) + 1
     const randCatsLength = Math.floor(Math.random() * 10) + 5
     let loggedUserCats = []
@@ -38,8 +39,8 @@ class catController {
         // console.log(" liker user >>>>>>>>>>>>>", likerId, loggedUserCats, likerId.concat(loggedUserCats), "<<<<<<<<<<<<< liker user ");
         if(likerId.length>0){
 
-          if(req.body.gender){
-            // console.log(" gender >>>>>>>>>>>>>", req.body.gender, "<<<<<<<<<<<<< gender ");
+          if(req.query.gender){
+            // console.log(" gender >>>>>>>>>>>>>", req.query.gender, "<<<<<<<<<<<<< gender ");
             return Cat.findAll({
               where: {
                 id: {
@@ -48,7 +49,7 @@ class catController {
                 UserId: {
                   [Op.in]:likerId
                 },
-                gender: req.body.gender
+                gender: req.query.gender
               }, //get cats except loggedUser Cats
               include: {
                 model: User,
@@ -82,11 +83,11 @@ class catController {
         likerCats = liker.map((cats)=>cats)
         likerCatsId = liker.map((cats)=>cats.dataValues.id)
         // console.log(">>>>>> likerCatsId ", likerCatsId);
-        if(req.body.gender){
+        if(req.query.gender){
           return Cat.findAll({
             where: {
               id: {[Op.notIn]: loggedUserCats.concat(likerCatsId)}, //get cats except loggedUser Cats
-              gender: req.body.gender
+              gender: req.query.gender
             }, 
             include: {
               model: User,
@@ -187,7 +188,7 @@ class catController {
         if (result) {
           console.log(result)
           res.status(201).json({ 
-            message: "image sucessfully uploaded",
+            message: "image successfully uploaded",
             img : result.Location
           });
         } else {
@@ -235,6 +236,24 @@ class catController {
       }
         
     }
+
+    static getByGender(req,res,next){
+      console.log(req.query)
+      Cat.findAll({
+        where: {
+          gender: req.query.gender
+        }
+      })
+      .then((data)=>{
+        res.status(200).json(data)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    }
+
+
+
 
     static putCats(req,res,next){
       let input = {

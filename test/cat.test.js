@@ -4,10 +4,10 @@ const { generateToken } = require("../helpers/jwt");
 const { User, IsMatch, Cat } = require("../models");
 const clearUser = require("./helper/clearUser");
 
-const { run, bucketParams } = require("../../s3/src/s3");
-const { s3Client } = require("../../s3/src/libs/s3Client.js");
+// const { run, bucketParams } = require("../../s3/src/s3");
+// const { s3Client } = require("../../s3/src/libs/s3Client.js");
 
-jest.mock("../../s3/src/libs/s3Client.js");
+// jest.mock("../../s3/src/libs/s3Client.js");
 
 let user_token = "";
 let user2_token = "";
@@ -16,23 +16,23 @@ let cat2_id = ""
 let user_id = ""
 let user2_id = ""
 
-const result = {
-  ETag: '"dffea32dccb77e06c1ac4715a3df9041"',
-  Location: 'https://catinder-app.s3.us-east-2.amazonaws.com/catImage-1622537233953.png',
-  key: 'catImage-1622537233953.png',
-  Key: 'catImage-1622537233953.png',
-  Bucket: 'catinder-app'
-}
-const uploadFile = jest.fn((catImage = {
-  fieldname: 'catImage',
-  originalname: 'image1.png',
-  encoding: '7bit',
-  mimetype: 'image/png',
-  destination: './public/uploads',
-  filename: 'catImage-1622536012688.png',
-  path: 'public/uploads/catImage-1622536012688.png',
-  size: 7281
-}) => result )
+// const result = {
+//   ETag: '"dffea32dccb77e06c1ac4715a3df9041"',
+//   Location: 'https://catinder-app.s3.us-east-2.amazonaws.com/catImage-1622537233953.png',
+//   key: 'catImage-1622537233953.png',
+//   Key: 'catImage-1622537233953.png',
+//   Bucket: 'catinder-app'
+// }
+// const uploadFile = jest.fn((catImage = {
+//   fieldname: 'catImage',
+//   originalname: 'image1.png',
+//   encoding: '7bit',
+//   mimetype: 'image/png',
+//   destination: './public/uploads',
+//   filename: 'catImage-1622536012688.png',
+//   path: 'public/uploads/catImage-1622536012688.png',
+//   size: 7281
+// }) => result )
 
 beforeAll(function (done) {
   User.create({
@@ -377,6 +377,27 @@ describe("GET/cat getCats SUCCESS ", function () {
       });
   });
 });
+
+describe("GET/cat getCats with gender SUCCESS ", function () {
+ 
+  it("responds with status 200", function (done) {
+    request(app)
+      .get("/cat")
+      .query({gender: "male"})
+      .set("access_token", user_token)
+      .then((response) => {
+        // console.log(req.query, "<<<<< INI QUERY GENDER")
+        let { body, status } = response;
+        expect(status).toEqual(200);
+        expect(typeof body).toEqual("object");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
+
 
 
 
