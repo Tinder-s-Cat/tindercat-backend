@@ -7,6 +7,7 @@ const { uploadFile } = require ("../helpers/S3")
 
 class catController {
   static getCats(req,res,next){
+    console.log(req.query)
     const randLikerLength = Math.floor(Math.random() * 5) + 1
     const randCatsLength = Math.floor(Math.random() * 10) + 5
     let loggedUserCats = []
@@ -33,12 +34,14 @@ class catController {
       .then((likedCat) =>{
         // console.log("Liked car>>>>>>>", likedCat);
         likerId = likedCat.map((data) => data.dataValues.UserId)
+        console.log(typeof(req.query.gender)=== "undefined")
         // likerCatsId = likedCat.map((data) => data.dataValues.id)
         // console.log("liked cat>>>>>>>", likerId , randLikerLength, randCatsLength, "<<<<<<<<< liked chat");
         // console.log(" liker user >>>>>>>>>>>>>", likerId, loggedUserCats, likerId.concat(loggedUserCats), "<<<<<<<<<<<<< liker user ");
         if(likerId.length>0){
-
-          if(req.query.gender){
+         console.log('MASUK SINI')
+          if(typeof(req.query.gender)=== "undefined"){
+            // console.log('MASUK')
             // console.log(" gender >>>>>>>>>>>>>", req.query.gender, "<<<<<<<<<<<<< gender ");
             return Cat.findAll({
               where: {
@@ -182,12 +185,12 @@ class catController {
     }
     static async imgUpload(req, res, next) {
         const file = req.file;
-        console.log(file, ">>>>>file")
+        // console.log(file, ">>>>>file")
         const result = await uploadFile(file)
         if (result) {
           console.log(result)
           res.status(201).json({ 
-            message: "image is sucessfully uploaded",
+            message: "image successfully uploaded",
             img : result.Location
           });
         } else {
@@ -235,6 +238,24 @@ class catController {
       }
         
     }
+
+    // static getByGender(req,res,next){
+    //   console.log(req.query)
+    //   Cat.findAll({
+    //     where: {
+    //       gender: req.query.gender
+    //     }
+    //   })
+    //   .then((data)=>{
+    //     res.status(200).json(data)
+    //   })
+    //   .catch((err)=>{
+    //     console.log(err)
+    //   })
+    // }
+
+
+
 
     static putCats(req,res,next){
       let input = {
