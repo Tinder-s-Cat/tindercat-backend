@@ -224,23 +224,23 @@ describe("POST/cat postCats FAILED because of having an invalid type", function 
   });
 });
 
-describe(`POST /cat/upload`, function () {
-  it(`Success update data with status 201`, function (done) {
+// describe(`POST /cat/upload`, function () {
+//   it(`Success update data with status 201`, function (done) {
     
-    request(app)
-      .post(`/cat/upload`)
-      .attach('catImage', './test/image1.png')
-      .set("access_token", user_token)
-      .end((err, res) => {
-        if (err) {
-          console.log('Error occured at PATCH users expIncrease test')
-          done(err)
-        }
-        expect(res.status).toEqual(201)
-        done()
-      })
-  }, 60000)
-})
+//     request(app)
+//       .post(`/cat/upload`)
+//       .attach('catImage', './test/image1.png')
+//       .set("access_token", user_token)
+//       .end((err, res) => {
+//         if (err) {
+//           console.log('Error occured at PATCH users expIncrease test')
+//           done(err)
+//         }
+//         expect(res.status).toEqual(201)
+//         done()
+//       })
+//   }, 60000)
+// })
 
 //LIKES
 describe("POST/like to cat 1 success", function(){
@@ -440,28 +440,28 @@ describe("GET/cat:id getCatsById FAILED to find cats", function () {
 //   });
 // });
 
-describe("POST/cat/upload FAILED because of undefined file imgupload", function () {
-  it("responds with status 400", function (done) {
-    let catsData = {
-      catImage: ""
-    };
-    request(app)
-      .post("/cat/upload")
-      .send(catsData)
-      .set("access_token", user_token)
-      .then((response) => {
-        let { body, status } = response;
-        expect(status).toEqual(400);
-        expect(typeof body).toEqual("object");
-        // expect(body).toHaveProperty("catImage");
-        expect(body.msg).toEqual("bad request, no file is selected");
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-});
+// describe("POST/cat/upload FAILED because of undefined file imgupload", function () {
+//   it("responds with status 400", function (done) {
+//     let catsData = {
+//       catImage: ""
+//     };
+//     request(app)
+//       .post("/cat/upload")
+//       .send(catsData)
+//       .set("access_token", user_token)
+//       .then((response) => {
+//         let { body, status } = response;
+//         expect(status).toEqual(400);
+//         expect(typeof body).toEqual("object");
+//         // expect(body).toHaveProperty("catImage");
+//         expect(body.msg).toEqual("bad request, no file is selected");
+//         done();
+//       })
+//       .catch((err) => {
+//         done(err);
+//       });
+//   });
+// });
 
 
 

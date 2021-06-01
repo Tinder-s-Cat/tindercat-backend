@@ -121,8 +121,12 @@ class catController {
         const file = req.file;
         console.log(file, ">>>>>file")
         const result = await uploadFile(file)
-        console.log(result)
-        res.status(201).json(req.file.filename);
+        if (result) {
+          console.log(result)
+          res.status(201).json(req.file.filename);
+        } else {
+          next(err);
+        }
     }
     static putCats(req,res,next){
       let input = {
