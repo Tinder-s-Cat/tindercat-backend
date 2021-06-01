@@ -4,12 +4,35 @@ const { generateToken } = require("../helpers/jwt");
 const { User, IsMatch, Cat } = require("../models");
 const clearUser = require("./helper/clearUser");
 
+const { run, bucketParams } = require("../../s3/src/s3");
+const { s3Client } = require("../../s3/src/libs/s3Client.js");
+
+jest.mock("../../s3/src/libs/s3Client.js");
+
 let user_token = "";
 let user2_token = "";
 let cat_id = "";
 let cat2_id = ""
 let user_id = ""
 let user2_id = ""
+
+const result = {
+  ETag: '"dffea32dccb77e06c1ac4715a3df9041"',
+  Location: 'https://catinder-app.s3.us-east-2.amazonaws.com/catImage-1622537233953.png',
+  key: 'catImage-1622537233953.png',
+  Key: 'catImage-1622537233953.png',
+  Bucket: 'catinder-app'
+}
+const uploadFile = jest.fn((catImage = {
+  fieldname: 'catImage',
+  originalname: 'image1.png',
+  encoding: '7bit',
+  mimetype: 'image/png',
+  destination: './public/uploads',
+  filename: 'catImage-1622536012688.png',
+  path: 'public/uploads/catImage-1622536012688.png',
+  size: 7281
+}) => result )
 
 beforeAll(function (done) {
   User.create({
@@ -226,17 +249,31 @@ describe("POST/cat postCats FAILED because of having an invalid type", function 
 
 // describe(`POST /cat/upload`, function () {
 //   it(`Success update data with status 201`, function (done) {
-    
+//     let fileImg = {
+//       fieldname: 'catImage',
+//       originalname: 'image1.png',
+//       encoding: '7bit',
+//       mimetype: 'image/png',
+//       destination: './public/uploads',
+//       filename: 'catImage-1622536012688.png',
+//       path: 'public/uploads/catImage-1622536012688.png',
+//       size: 7281
+//     }
 //     request(app)
 //       .post(`/cat/upload`)
-//       .attach('catImage', './test/image1.png')
+//       .send(fileImg)
+//       // .attach('catImage', './test/image1.png')
 //       .set("access_token", user_token)
 //       .end((err, res) => {
 //         if (err) {
-//           console.log('Error occured at PATCH users expIncrease test')
+//           console.log(err)
 //           done(err)
 //         }
-//         expect(res.status).toEqual(201)
+//         // expect(res.status).toEqual(201)
+//         // expect(uploadFile).toHaveProperty("Bucket")
+//         s3Client.send.mockResolvedValue({ isMock: true });
+//         const response = await run(bucketParams);
+//         expect(response.isMock).toEqual(true);
 //         done()
 //       })
 //   }, 60000)
