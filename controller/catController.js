@@ -133,7 +133,7 @@ class catController {
         const result = await uploadFile(file)
         if (result) {
           console.log(result)
-          res.status(201).json(req.file.filename);
+          res.status(201).json({ message: "image is sucessfully uploaded" });
         } else {
           next(err);
         }
