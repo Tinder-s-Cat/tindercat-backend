@@ -1,7 +1,9 @@
 const {Cat, User, IsMatch} = require ('../models')
 const sequelize = require('../models').sequelize
 const { Op } = require("sequelize");
+
 const distance =require('../middlewares/geolib')
+const { uploadFile } = require ("../helpers/S3")
 
 class catController {
   static getCats(req,res,next){
@@ -124,6 +126,17 @@ class catController {
           }
         });
         
+    }
+    static async imgUpload(req, res, next) {
+        const file = req.file;
+        console.log(file, ">>>>>file")
+        const result = await uploadFile(file)
+        if (result) {
+          console.log(result)
+          res.status(201).json(req.file.filename);
+        } else {
+          next(err);
+        }
     }
     static putCats(req,res,next){
       let input = {
