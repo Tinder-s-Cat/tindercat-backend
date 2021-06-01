@@ -34,12 +34,14 @@ class catController {
       .then((likedCat) =>{
         // console.log("Liked car>>>>>>>", likedCat);
         likerId = likedCat.map((data) => data.dataValues.UserId)
+        console.log(typeof(req.query.gender)=== "undefined")
         // likerCatsId = likedCat.map((data) => data.dataValues.id)
         // console.log("liked cat>>>>>>>", likerId , randLikerLength, randCatsLength, "<<<<<<<<< liked chat");
         // console.log(" liker user >>>>>>>>>>>>>", likerId, loggedUserCats, likerId.concat(loggedUserCats), "<<<<<<<<<<<<< liker user ");
         if(likerId.length>0){
-
-          if(req.query.gender){
+         console.log('MASUK SINI')
+          if(typeof(req.query.gender)=== "undefined"){
+            // console.log('MASUK')
             // console.log(" gender >>>>>>>>>>>>>", req.query.gender, "<<<<<<<<<<<<< gender ");
             return Cat.findAll({
               where: {
@@ -237,20 +239,20 @@ class catController {
         
     }
 
-    static getByGender(req,res,next){
-      console.log(req.query)
-      Cat.findAll({
-        where: {
-          gender: req.query.gender
-        }
-      })
-      .then((data)=>{
-        res.status(200).json(data)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
-    }
+    // static getByGender(req,res,next){
+    //   console.log(req.query)
+    //   Cat.findAll({
+    //     where: {
+    //       gender: req.query.gender
+    //     }
+    //   })
+    //   .then((data)=>{
+    //     res.status(200).json(data)
+    //   })
+    //   .catch((err)=>{
+    //     console.log(err)
+    //   })
+    // }
 
 
 
