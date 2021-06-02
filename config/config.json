@@ -3,7 +3,7 @@
 		"username": "postgres",
 		"password": "postgres",
 		"database": "tinder-cats",
-		"host": "localhost",
+		"host": "catinder-app.cnu6erp6nmp7.us-east-2.rds.amazonaws.com",
 		"dialect": "postgres"
 	},
 	"test": {
