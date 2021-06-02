@@ -221,11 +221,7 @@ class catController {
               res.status(201).json(data);
             })
             .catch((err) => {
-              if (err.name === "SequelizeValidationError") {
-                next(err);
-              } else {
-                next(err);
-              }
+              next(err)
             });
           } else {
             next(err);
