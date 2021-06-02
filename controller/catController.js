@@ -17,7 +17,8 @@ class catController {
     Cat.findAll({
       where: {
         UserId: req.loggedUser.id,
-      },
+        status: true
+      }
     })
       .then((userCats) => {
         loggedUserCats = userCats.map((cats) => cats.dataValues.id);
@@ -47,6 +48,7 @@ class catController {
                   [Op.in]: likerId,
                 },
                 gender: req.query.gender,
+                status: true
               }, //get cats except loggedUser Cats
               include: {
                 model: User,
@@ -62,8 +64,9 @@ class catController {
                   [Op.notIn]: loggedUserCats,
                 },
                 UserId: {
-                  [Op.in]: likerId,
+                  [Op.in]:likerId
                 },
+                status: true
               }, //get cats except loggedUser Cats
               include: {
                 model: User,
@@ -82,9 +85,10 @@ class catController {
         if (req.query.gender) {
           return Cat.findAll({
             where: {
-              id: { [Op.notIn]: loggedUserCats.concat(likerCatsId) }, //get cats except loggedUser Cats
+              id: {[Op.notIn]: loggedUserCats.concat(likerCatsId)}, //get cats except loggedUser Cats
               gender: req.query.gender,
-            },
+              status: true
+            }, 
             include: {
               model: User,
               required: true,
@@ -96,8 +100,9 @@ class catController {
         } else {
           return Cat.findAll({
             where: {
-              id: { [Op.notIn]: loggedUserCats.concat(likerCatsId) }, //get cats except loggedUser Cats
-            },
+              id: {[Op.notIn]: loggedUserCats.concat(likerCatsId)}, //get cats except loggedUser Cats
+              status: true
+            }, 
             include: {
               model: User,
               required: true,
@@ -225,9 +230,6 @@ class catController {
             where: { id: req.params.id },
           });
         }
-        // else {
-        //   throw { name: "Cat not found" };
-        // }
       })
       .then((editedData) => {
         res.status(200).json(editedData);
@@ -253,9 +255,6 @@ class catController {
             where: { id: req.params.id },
           });
         }
-        // else {
-        //   throw { name: "Cat not found" };
-        // }
       })
       .then((editedData) => {
         res.status(200).json(editedData);
@@ -276,9 +275,6 @@ class catController {
         if (data === 1) {
           res.status(200).json({ message: "Cat successfully deleted" });
         }
-        // else {
-        //   throw { name: "Cat not found" };
-        // }
       })
       .catch((err) => {
         next(err);
