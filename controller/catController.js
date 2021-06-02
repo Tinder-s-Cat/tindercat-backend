@@ -17,7 +17,8 @@ class catController {
     let likerId = []
     Cat.findAll({
       where: {
-        UserId: req.loggedUser.id
+        UserId: req.loggedUser.id,
+        status: true
       }
     })
       .then((userCats) => {
@@ -51,7 +52,8 @@ class catController {
                 UserId: {
                   [Op.in]:likerId
                 },
-                gender: req.query.gender
+                gender: req.query.gender,
+                status: true
               }, //get cats except loggedUser Cats
               include: {
                 model: User,
@@ -69,7 +71,8 @@ class catController {
                 },
                 UserId: {
                   [Op.in]:likerId
-                }
+                },
+                status: true
               }, //get cats except loggedUser Cats
               include: {
                 model: User,
@@ -89,7 +92,8 @@ class catController {
           return Cat.findAll({
             where: {
               id: {[Op.notIn]: loggedUserCats.concat(likerCatsId)}, //get cats except loggedUser Cats
-              gender: req.query.gender
+              gender: req.query.gender,
+              status: true
             }, 
             include: {
               model: User,
@@ -105,6 +109,7 @@ class catController {
           return Cat.findAll({
             where: {
               id: {[Op.notIn]: loggedUserCats.concat(likerCatsId)}, //get cats except loggedUser Cats
+              status: true
             }, 
             include: {
               model: User,
