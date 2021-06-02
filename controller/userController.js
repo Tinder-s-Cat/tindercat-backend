@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const { generateToken, verifyToken } = require("../helpers/jwt")
 const {User, IsMatch, Cat, IsLike, ChatRoom} = require ('../models');
 const cat = require("../models/cat");
-const distance =require('../middlewares/geolib')
+const distance =require('../Middlewares/geolib')
 
 
 class userController {
@@ -13,7 +13,9 @@ class userController {
             username: req.body.username,
             password: req.body.password,
             location: req.body.location,
-            profilePicture: req.body.profilePicture
+            profilePicture: req.body.profilePicture,
+            lat: req.body.lat,
+            lng: req.body.lng
         }
         User.create(input)
         .then((data)=>{

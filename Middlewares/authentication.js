@@ -17,8 +17,8 @@ async function authentication(req, res, next) {
           // password: data.password,
           location: data.location,
           profilePicture: data.profilePicture,
-          lat: data.lat,
-          lng: data.lng
+          // lat: data.lat,
+          // lng: data.lng
         };
         // console.log('MASUK')
         next();

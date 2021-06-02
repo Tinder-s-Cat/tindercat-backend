@@ -2,7 +2,7 @@ const {Cat, User, IsMatch} = require ('../models')
 const sequelize = require('../models').sequelize
 const { Op } = require("sequelize");
 
-const distance =require('../middlewares/geolib')
+const distance =require('../Middlewares/geolib')
 const { uploadFile } = require ("../helpers/S3")
 
 class catController {
