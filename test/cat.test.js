@@ -4,35 +4,12 @@ const { generateToken } = require("../helpers/jwt");
 const { User, IsMatch, Cat } = require("../models");
 const clearUser = require("./helper/clearUser");
 
-// const { run, bucketParams } = require("../../s3/src/s3");
-// const { s3Client } = require("../../s3/src/libs/s3Client.js");
-
-// jest.mock("../../s3/src/libs/s3Client.js");
-
 let user_token = "";
 let user2_token = "";
 let cat_id = "";
 let cat2_id = ""
 let user_id = ""
 let user2_id = ""
-
-// const result = {
-//   ETag: '"dffea32dccb77e06c1ac4715a3df9041"',
-//   Location: 'https://catinder-app.s3.us-east-2.amazonaws.com/catImage-1622537233953.png',
-//   key: 'catImage-1622537233953.png',
-//   Key: 'catImage-1622537233953.png',
-//   Bucket: 'catinder-app'
-// }
-// const uploadFile = jest.fn((catImage = {
-//   fieldname: 'catImage',
-//   originalname: 'image1.png',
-//   encoding: '7bit',
-//   mimetype: 'image/png',
-//   destination: './public/uploads',
-//   filename: 'catImage-1622536012688.png',
-//   path: 'public/uploads/catImage-1622536012688.png',
-//   size: 7281
-// }) => result )
 
 beforeAll(function (done) {
   User.create({
@@ -154,14 +131,6 @@ describe("POST/cat postCats SUCCESS", function () {
 
 describe("POST/cat/lengkap postCats SUCCESS", function () {
   it("responds with status 201", function (done) {
-    // let catsData = {
-    //   name: "sapi",
-    //   gender: "male",
-    //   age: 4,
-    //   race: "persian",
-    //   status: "true",
-    //   description: "kucing ras persia lucu, umur 1 tahun dijamin sehat",
-    // };
     request(app)
       .post("/cat/lengkap")
       .field('name', "sapi")
@@ -175,7 +144,6 @@ describe("POST/cat/lengkap postCats SUCCESS", function () {
         let { body, status } = response;
         expect(status).toEqual(201);
         expect(typeof body).toEqual("object");
-        // expect(body).toHaveProperty("message", "all data is required" );
         done();
       })
       .catch((err) => {
@@ -379,7 +347,6 @@ describe("POST/like to cat 1 success", function(){
     .then((response) => {
     
       let { body, status } = response;
-      // console.log(response, "<<<< INI LINE 283")
       expect(status).toEqual(201);
       expect(typeof body).toEqual("object");
    
@@ -390,21 +357,18 @@ describe("POST/like to cat 1 success", function(){
       done();
     })
     .catch((err) => {
-      // console.log(err, "<<<<<< INI ERR YANG DARI LIKES")
       done(err);
     });
   })
 })
 
 describe("GET/cat getCats with gender preference SUCCESS ", function () {
- 
   it("responds with status 200", function (done) {
     request(app)
       .get("/cat")
       .query({gender: "female"})
       .set("access_token", user_token)
       .then((response) => {
-        // console.log(req.query, "<<<<< INI QUERY GENDER")
         let { body, status } = response;
         expect(status).toEqual(200);
         expect(typeof body).toEqual("object");
@@ -421,7 +385,6 @@ describe("GET/cat getCats without gender preference SUCCESS ", function () {
   it("responds with status 200", function (done) {
     request(app)
       .get("/cat")
-      // .query({gender: ""})
       .set("access_token", user_token)
       .then((response) => {
         // console.log(req.query, "<<<<< INI QUERY GENDER")
@@ -452,16 +415,12 @@ describe("POST/like to cat 2 success", function(){
     .then((response) => {
     
       let { body, status } = response;
-      // console.log(response, "<<<< INI LINE 283")
-      // console.log(body, "<<< LINE 320")
       expect(status).toEqual(200);
       expect(typeof body).toEqual("object");
       expect(body.message).toEqual("You got a new match!");
-      // expect(body.message).toEqual("You got a new match!");
       done();
     })
     .catch((err) => {
-      // console.log(err, "<<<<<< INI ERR YANG DARI LIKES")
       done(err);
     });
   })
@@ -505,17 +464,10 @@ describe("GET/cat getCats SUCCESS ", function () {
   });
 });
 
-
-
-
-
-
-
 describe("GET/cat getCats FAILED because of not having an access token", function () {
   it("responds with status 401", function (done) {
     request(app)
       .get("/cat")
-
       .then((response) => {
         let { body, status } = response;
         expect(status).toEqual(401);
@@ -535,7 +487,6 @@ describe("GET/cat:id getCatsById SUCCESS", function () {
       .get(`/cat/${cat_id}`)
       .set("access_token", user_token)
       .then((response) => {
-        // console.log(response, "<<<<< INI RESPONSE")
         let { body, status } = response;
         expect(status).toEqual(200);
         expect(typeof body).toEqual("object");
@@ -552,7 +503,6 @@ describe("GET/cat:id getCatsById FAILED because of not having an access token", 
     request(app)
       .get(`/cat/${cat_id}`)
       .then((response) => {
-        // console.log(response, "<<<<< INI RESPONSE")
         let { body, status } = response;
         expect(status).toEqual(401);
         expect(body.message).toEqual("please login first");
@@ -571,7 +521,6 @@ describe("GET/cat:id getCatsById FAILED to find cats", function () {
       .set("access_token", user_token)
       .then((response) => {
         let { body, status } = response;
-        //   console.log(body, "<<<<< INI RESPONSE")
         expect(status).toEqual(404);
         expect(body.message).toEqual("error not found");
         done();
@@ -581,55 +530,6 @@ describe("GET/cat:id getCatsById FAILED to find cats", function () {
       });
   });
 });
-
-// IMG UPLOAD
-// describe("POST/cat/upload imgupload SUCCESS", function () {
-//   it("responds with status 201", function (done) {
-//     // let catsData = {
-//     //   catImage: "csFl6Y-M_400x400.jpg"
-//     // };
-//     request(app)
-//       .post("/cat/upload")
-//       // .send(catsData)
-//       .attach('name', "csFl6Y-M_400x400.jpg")
-//       .set("access_token", user_token)
-//       .then((response) => {
-//         let { body, status } = response;
-//         expect(status).toEqual(400);
-//         expect(typeof body).toEqual("object");
-//         // expect(body).toHaveProperty("catImage");
-//         // expect(body).toEqual(catsData.catImage);
-//         done();
-//       })
-//       .catch((err) => {
-//         done(err);
-//       });
-//   });
-// });
-
-// describe("POST/cat/upload FAILED because of undefined file imgupload", function () {
-//   it("responds with status 400", function (done) {
-//     let catsData = {
-//       catImage: ""
-//     };
-//     request(app)
-//       .post("/cat/upload")
-//       .send(catsData)
-//       .set("access_token", user_token)
-//       .then((response) => {
-//         let { body, status } = response;
-//         expect(status).toEqual(400);
-//         expect(typeof body).toEqual("object");
-//         // expect(body).toHaveProperty("catImage");
-//         expect(body.msg).toEqual("bad request, no file is selected");
-//         done();
-//       })
-//       .catch((err) => {
-//         done(err);
-//       });
-//   });
-// });
-
 
 
 //PUT
@@ -650,7 +550,6 @@ describe("PUT/cat putCats SUCCESS", function () {
       .set("access_token", user_token)
       .then((response) => {
         let { body, status } = response;
-        //   console.log(body)
         expect(status).toEqual(200);
         expect(typeof body).toEqual("object");
         expect(body.name).toEqual(catsData.name);
@@ -795,7 +694,6 @@ describe("PUT/cat putCats FAILED because of unauthorized", function () {
       .set("access_token", user2_token)
       .then((response) => {
         let { body, status } = response;
-        // console.log(body)
         expect(status).toEqual(401);
         expect(body.message).toEqual("Not authorized!");
         done();
@@ -818,7 +716,6 @@ describe("PATCH/cat patchCats SUCCESS", function () {
       .set("access_token", user_token)
       .then((response) => {
         let { body, status } = response;
-        //   console.log(body)
         expect(status).toEqual(200);
         expect(typeof body).toEqual("object");
         expect(body.status).toEqual(catsData.status);
@@ -904,7 +801,6 @@ describe("PATCH/cat patchCats FAILED because of unauthorized", function () {
       .set("access_token", user2_token)
       .then((response) => {
         let { body, status } = response;
-        // console.log(body)
         expect(status).toEqual(401);
         expect(body.message).toEqual("Not authorized!");
         done();
@@ -932,24 +828,6 @@ describe("DELETE/cat deleteCats SUCCESS ", function () {
       });
   });
 });
-
-// describe("DELETE/cat deleteCats FAILED because of unauthorized", function () {
-//   it("responds with status 401", function (done) {
-//     request(app)
-//       .delete(`/cat/${cat_id}`)
-//       .set("access_token", user2_token)
-//       .then((response) => {
-//         let { body, status } = response;
-//         console.log(body)
-//         expect(status).toEqual(401);
-//         expect(body.message).toEqual("Not authorized!");
-//         done();
-//       })
-//       .catch((err) => {
-//         done(err);
-//       });
-//   });
-// });
 
 describe("DELETE/cat deleteCats FAILED because of not having an access token ", function () {
   it("responds with status 401", function (done) {
@@ -983,8 +861,3 @@ describe("DELETE/cat deleteCats FAILED because of wrong cat ID", function () {
       });
   });
 });
-
-
-
-
-

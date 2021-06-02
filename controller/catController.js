@@ -183,20 +183,6 @@ class catController {
         });
         
     }
-    static async imgUpload(req, res, next) {
-        const file = req.file;
-        // console.log(file, ">>>>>file")
-        const result = await uploadFile(file)
-        if (result) {
-          console.log(result)
-          res.status(201).json({ 
-            message: "image successfully uploaded",
-            img : result.Location
-          });
-        } else {
-          next(err);
-        }
-    }
 
     static async postCatAndImage(req,res,next){
       const { name, gender, age, race, description } = req.body;
@@ -234,25 +220,7 @@ class catController {
       }
         
     }
-
-    // static getByGender(req,res,next){
-    //   console.log(req.query)
-    //   Cat.findAll({
-    //     where: {
-    //       gender: req.query.gender
-    //     }
-    //   })
-    //   .then((data)=>{
-    //     res.status(200).json(data)
-    //   })
-    //   .catch((err)=>{
-    //     console.log(err)
-    //   })
-    // }
-
-
-
-
+    
     static putCats(req,res,next){
       let input = {
         name: req.body.name,
