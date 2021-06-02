@@ -6,6 +6,10 @@ io.on('connection', (socket) => {
 		socket.join(data)
 	})
 
+	socket.on('refetch-match', (data) => {
+		io.emit('refetch-receive', { action: 'fetch-match' })
+	})
+
 	socket.on('send-message', (payload) => {
 		let chatMessage = {
 			UserId: payload.UserId,
