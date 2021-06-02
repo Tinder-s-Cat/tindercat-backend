@@ -396,7 +396,7 @@ describe("POST/like to cat 1 success", function(){
   })
 })
 
-describe("GET/cat getCats with gender SUCCESS ", function () {
+describe("GET/cat getCats with gender preference SUCCESS ", function () {
  
   it("responds with status 200", function (done) {
     request(app)
@@ -408,6 +408,27 @@ describe("GET/cat getCats with gender SUCCESS ", function () {
         let { body, status } = response;
         expect(status).toEqual(200);
         expect(typeof body).toEqual("object");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
+
+describe("GET/cat getCats without gender preference SUCCESS ", function () {
+ 
+  it("responds with status 200", function (done) {
+    request(app)
+      .get("/cat")
+      // .query({gender: ""})
+      .set("access_token", user_token)
+      .then((response) => {
+        // console.log(req.query, "<<<<< INI QUERY GENDER")
+        let { body, status } = response;
+        expect(status).toEqual(200);
+        expect(typeof body).toEqual("object");
+      
         done();
       })
       .catch((err) => {

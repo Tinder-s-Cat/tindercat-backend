@@ -40,7 +40,7 @@ class catController {
         // console.log(" liker user >>>>>>>>>>>>>", likerId, loggedUserCats, likerId.concat(loggedUserCats), "<<<<<<<<<<<<< liker user ");
         if(likerId.length>0){
          console.log('MASUK SINI')
-          if(typeof(req.query.gender)=== "undefined"){
+          if(typeof(req.query.gender) != "undefined" && typeof(req.query.gender) != "null"){
             // console.log('MASUK')
             // console.log(" gender >>>>>>>>>>>>>", req.query.gender, "<<<<<<<<<<<<< gender ");
             return Cat.findAll({
