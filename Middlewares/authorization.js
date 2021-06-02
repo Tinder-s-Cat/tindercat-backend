@@ -4,7 +4,6 @@ async function authorizationCat(req, res, next) {
     try {
       Cat.findByPk(+req.params.id)
         .then((data) => {
-          // console.log(data, "<<<<< INI DATA")
           if (data) {
             if (data.UserId === req.loggedUser.id) {
               next();
@@ -19,7 +18,6 @@ async function authorizationCat(req, res, next) {
           next(err)
         });
     } catch (error) {
-      // console.log(error, "<<<< INI ERROR")
       next(error);
     }
   }

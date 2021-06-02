@@ -44,7 +44,6 @@ describe("POST /register success", function(){
         let { body, status } = response;
         expect(status).toEqual(201);
         expect(typeof body).toEqual("object");
-        // expect(body).toHaveProperty("id");
         expect(body).toHaveProperty("username");
         expect(body).toHaveProperty("location");
         expect(body).toHaveProperty("email");
@@ -102,10 +101,8 @@ describe("POST /register register failed because of empty fields", function () {
         .set("Accept", "application/json")
         .then((response) => {
           let { body, status } = response;
-        //   console.log(body.message)
           expect(status).toEqual(400);
           expect(typeof body).toEqual("object");
-        //   expect(body).toHaveProperty("message");
           expect(body).toEqual(["Username should not be empty", "Location should not be empty", "Email is incorrect", "Email should not be empty", "Password should not be empty"]);
           done();
         })
@@ -153,7 +150,6 @@ describe("POST /register register failed because of empty fields", function () {
             .set("Accept", "application/json")
             .then((response) => {
               let { body, status } = response;
-            //   console.log(body)
               expect(status).toEqual(401);
               expect(body.message).toEqual("Invalid email / password");
               done();

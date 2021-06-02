@@ -66,7 +66,7 @@ class MessageController {
                 }
             });
             res.status(200).json(friends)
-            // res.status(200).json(data)
+    
         })
         .catch((err) => {
             next(err);
@@ -77,7 +77,6 @@ class MessageController {
     static getMessage(req, res, next) {
         let id = req.params.id
         let isMatchId = req.params.isMatchId
-        console.log(isMatchId, ">>>>isMatchId")
         Message.findAll({
             include : [
                 {
