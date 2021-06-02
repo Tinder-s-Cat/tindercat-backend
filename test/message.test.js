@@ -115,11 +115,6 @@ describe("getFriends SUCCESS GET/friend", function () {
           chatroomId = body[0].id;
           expect(body[0]).toHaveProperty("id")
           expect(body[0]).toHaveProperty("UserId")
-          // expect(body[0]).toHaveProperty("IsMatchId")
-          // expect(body[0]).toHaveProperty("username")
-          // expect(body[0]).toHaveProperty("location")
-          // expect(body[0]).toHaveProperty("email")
-          // expect(body[0]).toHaveProperty("profilePicture")
         }
         expect(typeof body).toEqual("object");
         done();
@@ -149,7 +144,6 @@ describe("getFriends FAIL GET/friend", function () {
 
 describe("SUCCESS /GET chatroom/:id/:isMatch", function () {
   it("responds with status 200", function (done) {
-    console.log(chatroomId, ">>>>chatroomid")
     request(app)
       .get(`/chatroom/${chatroomId}/${isMatchId}`)
       .set("access_token", user_token)
@@ -186,7 +180,6 @@ describe("SUCCESS /POST chatroom/:id/:isMatch", function () {
     let input = {
       message : "pesan ke match"
     }
-    console.log(chatroomId, ">>>>chatroomid")
     request(app)
       .post(`/chatroom/${chatroomId}/${isMatchId}`)
       .send(input)
