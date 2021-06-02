@@ -13,10 +13,7 @@ catRouter.get("/:id",  catController.getCatsById);
 
 
 catRouter.post("/", catController.postCats);
-// catRouter.post("/upload", upload, catController.imgUpload);
 catRouter.post("/lengkap", upload, catController.postCatAndImage);
-// catRouter.post("/upload", catController.imgUpload);
-// catRouter.use(authorization);
 catRouter.put("/:id", authorization, catController.putCats);
 catRouter.patch("/:id", authorization, catController.patchCats);
 catRouter.delete("/:id", authorization, catController.deleteCats);
