@@ -164,10 +164,22 @@ describe('Suite of unit tests', function () {
 			}
 			socket.emit('join-room', chatRoomId)
 			socket.emit('send-message', chatMessage)
-	
+
 			socket.on('receive-message-fail', (dataRes) => {
 				expect(dataRes).toBeInstanceOf(Object)
 				expect(dataRes).toHaveProperty('error')
+				done()
+			})
+		})
+	})
+
+	describe('Refetch Data', function () {
+		test('Sending message to the chat error', (done) => {
+			socket.emit('refetch-match', '')
+
+			socket.on('refetch-receive', (dataRes) => {
+				expect(dataRes).toBeInstanceOf(Object)
+				expect(dataRes).toHaveProperty('action')
 				done()
 			})
 		})
