@@ -2,7 +2,7 @@ const {Cat, User, IsMatch} = require ('../models')
 const sequelize = require('../models').sequelize
 const { Op } = require("sequelize");
 
-const distance =require('../middlewares/geolib')
+const distance =require('../Middlewares/geolib')
 const { uploadFile } = require ("../helpers/S3")
 
 class catController {
@@ -40,7 +40,7 @@ class catController {
         // console.log(" liker user >>>>>>>>>>>>>", likerId, loggedUserCats, likerId.concat(loggedUserCats), "<<<<<<<<<<<<< liker user ");
         if(likerId.length>0){
          console.log('MASUK SINI')
-          if(typeof(req.query.gender)=== "undefined"){
+          if(typeof(req.query.gender) != "undefined" && typeof(req.query.gender) != "null"){
             // console.log('MASUK')
             // console.log(" gender >>>>>>>>>>>>>", req.query.gender, "<<<<<<<<<<<<< gender ");
             return Cat.findAll({
