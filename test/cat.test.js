@@ -152,6 +152,91 @@ describe("POST/cat postCats SUCCESS", function () {
   });
 });
 
+describe("POST/cat/lengkap postCats SUCCESS", function () {
+  it("responds with status 201", function (done) {
+    // let catsData = {
+    //   name: "sapi",
+    //   gender: "male",
+    //   age: 4,
+    //   race: "persian",
+    //   status: "true",
+    //   description: "kucing ras persia lucu, umur 1 tahun dijamin sehat",
+    // };
+    request(app)
+      .post("/cat/lengkap")
+      .field('name', "sapi")
+      .field('gender', "male")
+      .field('age', 4)
+      .field('race', "persian")
+      .field('description', "kucing ras persia lucu, umur 1 tahun dijamin sehat")
+      .attach('profilePicture', './test/image1.png')
+      .set("access_token", user_token)
+      .then((response) => {
+        let { body, status } = response;
+        expect(status).toEqual(201);
+        expect(typeof body).toEqual("object");
+        // expect(body).toHaveProperty("message", "all data is required" );
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  }, 60000);
+});
+
+describe("POST/cat/lengkap postCats FAILED due to uncomplete data, no image", function () {
+  it("responds with status 201", function (done) {
+    let catsData = {
+      name: "sapi",
+      gender: "male",
+      age: 4,
+      race: "persian",
+      status: "true",
+      description: "kucing ras persia lucu, umur 1 tahun dijamin sehat",
+    };
+    request(app)
+      .post("/cat/lengkap")
+      .send(catsData)
+      .set("access_token", user_token)
+      .then((response) => {
+        let { body, status } = response;
+        expect(status).toEqual(500);
+        expect(typeof body).toEqual("object");
+        expect(body).toHaveProperty("message", "all data is required" );
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
+
+describe("POST/cat/lengkap postCats FAILED due to uncomplete information", function () {
+  it("responds with status 201", function (done) {
+    let catsData = {
+      // name: "sapi",
+      gender: "male",
+      // age: 4,
+      // race: "persian",
+      status: "true",
+      description: "kucing ras persia lucu, umur 1 tahun dijamin sehat",
+    };
+    request(app)
+      .post("/cat/lengkap")
+      .send(catsData)
+      .set("access_token", user_token)
+      .then((response) => {
+        let { body, status } = response;
+        expect(status).toEqual(500);
+        expect(typeof body).toEqual("object");
+        expect(body).toHaveProperty("message", "all data is required" );
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
 
 describe("POST/cat postCats FAILED because of not having access token", function () {
   it("responds with status 401", function (done) {
