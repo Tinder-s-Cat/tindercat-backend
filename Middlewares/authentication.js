@@ -16,8 +16,8 @@ async function authentication(req, res, next) {
           username: data.username,
           location: data.location,
           profilePicture: data.profilePicture,
-          // lat: data.lat,
-          // lng: data.lng
+          lat: data.lat,
+          lng: data.lng
         };
         next();
       } 
