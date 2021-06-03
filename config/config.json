@@ -14,10 +14,10 @@
 		"dialect": "postgres"
 	},
 	"production": {
-		"username": "root",
-		"password": null,
-		"database": "database_production",
-		"host": "localhost",
+		"username": "postgres",
+		"password": "postgres",
+		"database": "tinder-cats",
+		"host": "catinder-app.cnu6erp6nmp7.us-east-2.rds.amazonaws.com",
 		"dialect": "postgres"
 	}
 }
