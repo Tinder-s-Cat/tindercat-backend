@@ -2,14 +2,14 @@
 	"development": {
 		"username": "emilia",
 		"password": "postgres",
-		"database": "tinder-cats-check",
-		"host": "localhost",
+		"database": "tinder-cats",
+		"host": "catinder-app.cnu6erp6nmp7.us-east-2.rds.amazonaws.com",
 		"dialect": "postgres"
 	},
 	"test": {
 		"username": "emilia",
 		"password": "postgres",
-		"database": "tinder-cats-test-check",
+		"database": "tinder-cats-test",
 		"host": "localhost",
 		"dialect": "postgres"
 	},

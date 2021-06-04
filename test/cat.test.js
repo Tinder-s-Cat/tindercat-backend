@@ -7,9 +7,9 @@ const clearUser = require("./helper/clearUser");
 let user_token = "";
 let user2_token = "";
 let cat_id = "";
-let cat2_id = ""
-let user_id = ""
-let user2_id = ""
+let cat2_id = "";
+let user_id = "";
+let user2_id = "";
 
 beforeAll(function (done) {
   User.create({
@@ -33,7 +33,7 @@ beforeAll(function (done) {
         email: data.email,
       };
       const access_token = generateToken(payload);
-      user_id = data.id
+      user_id = data.id;
       user_token = access_token;
       return User.create({
         email: "test2@mail.com",
@@ -58,7 +58,7 @@ beforeAll(function (done) {
       };
       const access_token = generateToken(payload);
       user2_token = access_token;
-      user2_id = data.id
+      user2_id = data.id;
       return Cat.create({
         name: "nala",
         gender: "female",
@@ -68,17 +68,15 @@ beforeAll(function (done) {
         profilePicture:
           "https://www.purina.co.uk/sites/default/files/2021-02/CAT%20BREED%20Hero%20Desktop_0015_Persian.jpg",
         description: "kucing ras persia lucu, umur 1 tahun dijamin sehat",
-        UserId: user2_id
-      })
+        UserId: user2_id,
+      });
     })
-    .then((data)=>{
-      // console.log(data, "<<<< INI LINE 74")
-      cat2_id = data.dataValues.id
-      
+    .then((data) => {
+      cat2_id = data.dataValues.id;
+
       done();
     })
     .catch((err) => {
-      // console.log(err, "<<<<< INI LINE 77")
       done(err);
     });
 });
@@ -133,12 +131,15 @@ describe("POST/cat/lengkap postCats SUCCESS", function () {
   it("responds with status 201", function (done) {
     request(app)
       .post("/cat/lengkap")
-      .field('name', "sapi")
-      .field('gender', "male")
-      .field('age', 4)
-      .field('race', "persian")
-      .field('description', "kucing ras persia lucu, umur 1 tahun dijamin sehat")
-      .attach('profilePicture', './test/image1.png')
+      .field("name", "sapi")
+      .field("gender", "male")
+      .field("age", 4)
+      .field("race", "persian")
+      .field(
+        "description",
+        "kucing ras persia lucu, umur 1 tahun dijamin sehat"
+      )
+      .attach("profilePicture", "./test/image1.png")
       .set("access_token", user_token)
       .then((response) => {
         let { body, status } = response;
@@ -170,7 +171,7 @@ describe("POST/cat/lengkap postCats FAILED due to uncomplete data, no image", fu
         let { body, status } = response;
         expect(status).toEqual(500);
         expect(typeof body).toEqual("object");
-        expect(body).toHaveProperty("message", "all data is required" );
+        expect(body).toHaveProperty("message", "all data is required");
         done();
       })
       .catch((err) => {
@@ -197,7 +198,7 @@ describe("POST/cat/lengkap postCats FAILED due to uncomplete information", funct
         let { body, status } = response;
         expect(status).toEqual(500);
         expect(typeof body).toEqual("object");
-        expect(body).toHaveProperty("message", "all data is required" );
+        expect(body).toHaveProperty("message", "all data is required");
         done();
       })
       .catch((err) => {
@@ -252,7 +253,6 @@ describe("POST/cat postCats FAILED because of having an empty field or invalid v
       .set("access_token", user_token)
       .then((response) => {
         let { body, status } = response;
-        //   console.log(body, "YANG INI <<<<")
         expect(status).toEqual(400);
         expect(body).toEqual([
           "Name should not be empty",
@@ -263,7 +263,6 @@ describe("POST/cat postCats FAILED because of having an empty field or invalid v
         done();
       })
       .catch((err) => {
-        // console.log(err, "INI ERRORNYA")
         done(err);
       });
   });
@@ -288,85 +287,51 @@ describe("POST/cat postCats FAILED because of having an invalid type", function 
       .set("access_token", user_token)
       .then((response) => {
         let { body, status } = response;
-        //   console.log(body, "YANG INI <<<<")
+
         expect(status).toEqual(400);
         expect(body).toEqual(["Age must be number"]);
         done();
       })
       .catch((err) => {
-        // console.log(err, "INI ERRORNYA")
         done(err);
       });
   });
 });
 
-// describe(`POST /cat/upload`, function () {
-//   it(`Success update data with status 201`, function (done) {
-//     let fileImg = {
-//       fieldname: 'catImage',
-//       originalname: 'image1.png',
-//       encoding: '7bit',
-//       mimetype: 'image/png',
-//       destination: './public/uploads',
-//       filename: 'catImage-1622536012688.png',
-//       path: 'public/uploads/catImage-1622536012688.png',
-//       size: 7281
-//     }
-//     request(app)
-//       .post(`/cat/upload`)
-//       .send(fileImg)
-//       // .attach('catImage', './test/image1.png')
-//       .set("access_token", user_token)
-//       .end((err, res) => {
-//         if (err) {
-//           console.log(err)
-//           done(err)
-//         }
-//         // expect(res.status).toEqual(201)
-//         // expect(uploadFile).toHaveProperty("Bucket")
-//         s3Client.send.mockResolvedValue({ isMock: true });
-//         const response = await run(bucketParams);
-//         expect(response.isMock).toEqual(true);
-//         done()
-//       })
-//   }, 60000)
-// })
-
 //LIKES
-describe("POST/like to cat 1 success", function(){
-  it("responds with status 201", function(done){
-      let isLikes = {
-        UserId: user_id,
-        CatId: cat_id
-      }                                                                                                               
-  request(app)
-    .post("/like")
-    .send(isLikes)//kalau ngirim data memang harus sama, karena memang kalau dikirim dari FE userID nya card sama dengan yang punya kucing.
-    .set("access_token", user2_token)
-    .set("Accept", "application/json")
-    .then((response) => {
-    
-      let { body, status } = response;
-      expect(status).toEqual(201);
-      expect(typeof body).toEqual("object");
-   
-      // expect(body).toHaveProperty("id");
-      // expect(body).toHaveProperty("username");
-      // expect(body).toHaveProperty("location")
-      expect(body.message).toEqual("Cat Liked");
-      done();
-    })
-    .catch((err) => {
-      done(err);
-    });
-  })
-})
+describe("POST/like to cat 1 success", function () {
+  it("responds with status 201", function (done) {
+    let isLikes = {
+      UserId: user_id,
+      CatId: cat_id,
+    };
+    request(app)
+      .post("/like")
+      .send(isLikes) //kalau ngirim data memang harus sama, karena memang kalau dikirim dari FE userID nya card sama dengan yang punya kucing.
+      .set("access_token", user2_token)
+      .set("Accept", "application/json")
+      .then((response) => {
+        let { body, status } = response;
+        expect(status).toEqual(201);
+        expect(typeof body).toEqual("object");
+
+        // expect(body).toHaveProperty("id");
+        // expect(body).toHaveProperty("username");
+        // expect(body).toHaveProperty("location")
+        expect(body.message).toEqual("Cat Liked");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
 
 describe("GET/cat getCats with gender preference SUCCESS ", function () {
   it("responds with status 200", function (done) {
     request(app)
       .get("/cat")
-      .query({gender: "female"})
+      .query({ gender: "female" })
       .set("access_token", user_token)
       .then((response) => {
         let { body, status } = response;
@@ -381,17 +346,15 @@ describe("GET/cat getCats with gender preference SUCCESS ", function () {
 });
 
 describe("GET/cat getCats without gender preference SUCCESS ", function () {
- 
   it("responds with status 200", function (done) {
     request(app)
       .get("/cat")
       .set("access_token", user_token)
       .then((response) => {
-        // console.log(req.query, "<<<<< INI QUERY GENDER")
         let { body, status } = response;
         expect(status).toEqual(200);
         expect(typeof body).toEqual("object");
-      
+
         done();
       })
       .catch((err) => {
@@ -400,31 +363,29 @@ describe("GET/cat getCats without gender preference SUCCESS ", function () {
   });
 });
 
-
-describe("POST/like to cat 2 success", function(){
-  it("responds with status 201", function(done){
-      let isLikes = {
-        UserId: user2_id,
-        CatId: cat2_id
-      }                                                                                                               
-  request(app)
-    .post("/like")
-    .send(isLikes)
-    .set("access_token", user_token)
-    .set("Accept", "application/json")
-    .then((response) => {
-    
-      let { body, status } = response;
-      expect(status).toEqual(200);
-      expect(typeof body).toEqual("object");
-      expect(body.message).toEqual("You got a new match!");
-      done();
-    })
-    .catch((err) => {
-      done(err);
-    });
-  })
-})
+describe("POST/like to cat 2 success", function () {
+  it("responds with status 201", function (done) {
+    let isLikes = {
+      UserId: user2_id,
+      CatId: cat2_id,
+    };
+    request(app)
+      .post("/like")
+      .send(isLikes)
+      .set("access_token", user_token)
+      .set("Accept", "application/json")
+      .then((response) => {
+        let { body, status } = response;
+        expect(status).toEqual(200);
+        expect(typeof body).toEqual("object");
+        expect(body.message).toEqual("You got a new match!");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
 
 //GET FRIEND
 describe("GET/friend/:id getFriend SUCCESS ", function () {
@@ -443,8 +404,6 @@ describe("GET/friend/:id getFriend SUCCESS ", function () {
       });
   });
 });
-
-
 
 //GET
 describe("GET/cat getCats SUCCESS ", function () {
@@ -530,7 +489,6 @@ describe("GET/cat:id getCatsById FAILED to find cats", function () {
       });
   });
 });
-
 
 //PUT
 describe("PUT/cat putCats SUCCESS", function () {
@@ -680,16 +638,17 @@ describe("PUT/cat putCats FAILED because of wrong cat ID", function () {
 
 describe("PUT/cat putCats FAILED because of unauthorized", function () {
   it("responds with status 401", function (done) {
-      let catsData = {
-        name: "mengkiW",
-        gender: "male",
-        age: 3,
-        race: "persian",
-        profilePicture: "https://www.purina.co.uk/sites/default/files/2021-02/CAT%20BREED%20Hero%20Desktop_0015_Persian.jpg",
-        description: "kucing ras persia lucu, umur 1 tahun dijamin sehat",
-        };
-     request(app)
-     .put(`/cat/${cat_id}`)
+    let catsData = {
+      name: "mengkiW",
+      gender: "male",
+      age: 3,
+      race: "persian",
+      profilePicture:
+        "https://www.purina.co.uk/sites/default/files/2021-02/CAT%20BREED%20Hero%20Desktop_0015_Persian.jpg",
+      description: "kucing ras persia lucu, umur 1 tahun dijamin sehat",
+    };
+    request(app)
+      .put(`/cat/${cat_id}`)
       .send(catsData)
       .set("access_token", user2_token)
       .then((response) => {
@@ -792,11 +751,11 @@ describe("PATCH/cat patchCats FAILED because of an invalid type", function () {
 
 describe("PATCH/cat patchCats FAILED because of unauthorized", function () {
   it("responds with status 401", function (done) {
-      let catsData = {
-        status: false
-        };
-     request(app)
-     .patch(`/cat/${cat_id}`)
+    let catsData = {
+      status: false,
+    };
+    request(app)
+      .patch(`/cat/${cat_id}`)
       .send(catsData)
       .set("access_token", user2_token)
       .then((response) => {
