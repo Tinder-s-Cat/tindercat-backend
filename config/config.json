@@ -1,15 +1,15 @@
 {
 	"development": {
-		"username": "postgres",
+		"username": "emilia",
 		"password": "postgres",
-		"database": "tinder-cats",
+		"database": "tinder-cats-check",
 		"host": "localhost",
 		"dialect": "postgres"
 	},
 	"test": {
-		"username": "postgres",
+		"username": "emilia",
 		"password": "postgres",
-		"database": "tinder-cats-test",
+		"database": "tinder-cats-test-check",
 		"host": "localhost",
 		"dialect": "postgres"
 	},
